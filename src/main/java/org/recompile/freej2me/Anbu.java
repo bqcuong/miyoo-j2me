@@ -151,14 +151,11 @@ public class Anbu
 			return globalFont;
 		}
 		try{
-			// 加载字体
 			java.awt.Font tmpFont = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new File("./font.ttf"));
-				
-			// 字体大小设置
-			globalFont = tmpFont.deriveFont(java.awt.Font.PLAIN,12f); // 12f 表示12号大小
+			globalFont = tmpFont.deriveFont(java.awt.Font.PLAIN,12f);
 		}
 		catch (Exception e) {
-            System.err.println("字体文件加载失败,使用默认字体: " + e.getMessage());
+            System.err.println("Failed to load font: " + e.getMessage());
 			globalFont = new java.awt.Font("MiSans Normal", java.awt.Font.PLAIN,  12);
         }
 		return globalFont;
@@ -168,11 +165,9 @@ public class Anbu
 	public Anbu(String args[])
 	{
 		sdl = new SDL();
-		//au=new Audio();
 
 		if (args.length < 3)
 		{
-			System.out.println("参数数量不一致");
 			System.exit(0);
 		}
 		
