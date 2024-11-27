@@ -1,0 +1,12 @@
+{
+  "label":"J2ME",
+  "icon":"icon.png",
+  "iconsel":"",
+  "launch":"launch.sh",
+  "rompath":"rom",
+  "imgpath":"rom/img",
+  "useswap":1,
+  "shortname":0,
+  "hidebios":0,
+  "extlist":"jar"
+}

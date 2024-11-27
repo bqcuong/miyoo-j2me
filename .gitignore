@@ -1,6 +1,8 @@
 build/
 target/
+release/
 build_tools/
 
 .idea/
 *.iml
+.DS_Store
