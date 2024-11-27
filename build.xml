@@ -40,7 +40,6 @@
 	<jar
 		destfile="build/freej2me-sdl.jar"
 		basedir="build/classes">
-		<fileset dir="resources" />
 		<metainf dir="META-INF" />
 		<manifest>
 			<attribute name="Main-Class" value="org.recompile.freej2me.Anbu"/>
