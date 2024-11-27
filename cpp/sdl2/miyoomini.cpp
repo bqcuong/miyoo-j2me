@@ -54,11 +54,8 @@ int KEY_0=M_B;
 
 pthread_t t_capturing;
 
-//原始游戏画面大小
 int source_width = 0, source_height = 0;
-//miyoo的屏幕大小
 int display_width = 640, display_height = 480;
-//int last_time = 0;
 
 bool capturing = true;
 int rotate=0;
@@ -101,8 +98,6 @@ unsigned char joymouseImage[374] =
 
 void sendKey(int key, bool pressed)
 {
-	//std::cerr<<"key name:"<<SDL_GetKeyName(key)<<" key num:"<<key<<" pressed:"<<pressed <<std::endl;
-	
 	Uint8 bytes [5];
 	bytes[0] = (Uint8) ((use_mouse << 4 & 0xF0) | pressed);
 	
@@ -140,7 +135,6 @@ void loadDisplayDimentions()
 	display_height=480;
 }
 
-//实际显示区域
 SDL_Rect getDestinationRect(int source_width,int source_height)
 {
 	double scale = std::min( (double) display_width/source_width, (double) display_height/source_height );
@@ -163,7 +157,6 @@ void rot(unsigned char* src,unsigned char*dest,int w,int h)
 		{
 			dest[i*h*BYTES+j*BYTES]=src[j*w*BYTES+(w-i)*BYTES];
 			dest[i*h*BYTES+j*BYTES+1]=src[j*w*BYTES+(w-i)*BYTES+1];
-			//dest[i*h*3+j*3+2]=src[j*w*3+(w-i)*3+2];
 		}
 	}
 }
@@ -176,26 +169,15 @@ void rot2(unsigned char* src,unsigned char*dest,int w,int h)
 		{
 			dest[(w-i-1)*h*BYTES+j*BYTES]=src[(h-j-1)*w*BYTES+(w-i)*BYTES];
 			dest[(w-i-1)*h*BYTES+j*BYTES+1]=src[(h-j-1)*w*BYTES+(w-i)*BYTES+1];
-			//dest[(w-i-1)*h*3+j*3+2]=src[(h-j-1)*w*3+(w-i)*3+2];
 		}
 	}
 }
 
 void drawFrame(unsigned char *frame, SDL_Texture *mTexture,size_t pitch, SDL_Rect *dest, int interFrame = 16)
 {
-	// Cutoff rendering at 60fps，毫秒
-	//if (SDL_GetTicks() - last_time < interFrame) {
-	//	return;
-	//}
-
-	//last_time = SDL_GetTicks();
-
 	SDL_RenderClear(mRenderer);
 	SDL_UpdateTexture(mTexture, NULL, frame, pitch);
-	//SDL_RenderCopy(mRenderer, mBackground, NULL, NULL);
 	SDL_RenderCopy(mRenderer, mTexture, NULL, dest);
-	//SDL_RenderCopyEx(mRenderer, mOverlay, NULL, dest, angle, NULL, SDL_FLIP_NONE);
-	//更新到屏幕
 	SDL_RenderPresent(mRenderer);
 	
 }
@@ -213,7 +195,7 @@ void init()
 	if(SDL_Init(SDL_INIT_VIDEO) < 0) 
 	{
 		std::cerr << "Unable to initialize SDL" << std::endl;
-		std::cerr <<"SDL无法初始化! SDL_Error: "<<SDL_GetError()<<std::endl;
+		std::cerr <<"SDL_Error: "<<SDL_GetError()<<std::endl;
 		exit(1);
 	}
 
@@ -262,10 +244,8 @@ void loadBackground()
     if (bmp == NULL) {
         std::cerr<<"SDL_LoadBMP failed: "<<SDL_GetError()<<std::endl;
     }
-	
 
     mBackground = SDL_CreateTextureFromSurface(mRenderer, bmp);
-	
     SDL_FreeSurface(bmp);
 }
 
@@ -276,20 +256,16 @@ void startStreaming()
 	
 	dest= getDestinationRect(source_width,source_height);
 	pitch= source_width * sizeof(char) * BYTES;
-	//纹理大小是jar游戏大小
 	mTexture = SDL_CreateTexture(mRenderer, SDL_PIXELFORMAT_BGR565, SDL_TEXTUREACCESS_STREAMING, source_width, source_height);
 	
 	rodest= getDestinationRect(source_height,source_width);
 	ropitch= source_height * sizeof(char) * BYTES;
 	romTexture = SDL_CreateTexture(mRenderer, SDL_PIXELFORMAT_BGR565, SDL_TEXTUREACCESS_STREAMING,  source_height,source_width);
 
-	//loadBackground();
-	
 	size_t num_chars = source_width * source_height * BYTES;
 	unsigned char* frame = new unsigned char[num_chars];
 	unsigned char* tmp_frame = new unsigned char[num_chars];
 	
-	//从输入流里读取到frame
 	while (capturing && updateFrame(num_chars, frame) || !sendQuitEvent())
 	{
 		if(rotate==1)
@@ -344,8 +320,6 @@ void startStreaming()
 
 	SDL_DestroyTexture(mTexture);
 	SDL_DestroyTexture(romTexture);
-	//SDL_DestroyTexture(mBackground);
-	
 	SDL_DestroyRenderer(mRenderer);
 	
     SDL_DestroyWindow(mWindow);
@@ -358,12 +332,10 @@ void *startCapturing(void *args)
 	int mod=0;
 	int ignore=0;
 	int isFirst=1;
-	//SDL_EnableKeyRepeat(200, 20);
 	while (capturing)
 	{
 		SDL_Event event;
 		if (SDL_WaitEvent(&event))
-		// while(SDL_PollEvent(&event)!= 0)
 		{
 			switch (event.type)
 			{
@@ -375,7 +347,7 @@ void *startCapturing(void *args)
 					break;
 				case SDL_KEYDOWN:
 				case SDL_KEYUP:
-					if(event.key.repeat && isFirst)//重复按键
+					if(event.key.repeat && isFirst)
 					{
 						isFirst=0;
 						continue;
@@ -400,7 +372,7 @@ void *startCapturing(void *args)
 						capturing = false;
 						pthread_exit(NULL);
 					}
-					else if(key==KEY_RIGHT)//A=右键
+					else if(key==KEY_RIGHT)//A=Key right
 					{
 						key=SDLK_w;
 					}
@@ -412,17 +384,17 @@ void *startCapturing(void *args)
 						}
 						else
 						{
-							key=SDLK_x;//英文x，这里只要不冲突就行
+							key=SDLK_x;
 							ignore=0;
 						}
 						
 						
 						if(mod && event.type == SDL_KEYDOWN)
 						{
-							key=SDLK_x;//英文x，这里只要不冲突就行
+							key=SDLK_x;
 							mod=0;
-							rotate=(1+rotate)%3;//连续旋转
-							ignore=1;//忽略下次0键的释放
+							rotate=(1+rotate)%3;
+							ignore=1;
 						}
 						
 					}
@@ -438,7 +410,7 @@ void *startCapturing(void *args)
 						}
 						
 					}
-					else if(key==KEY_LEFT) //Y=左键
+					else if(key==KEY_LEFT) //Y=Key left
 					{
 						
 						if(!ignore)
@@ -447,20 +419,20 @@ void *startCapturing(void *args)
 						}
 						else
 						{
-							key=SDLK_x;//英文x，这里只要不冲突就行
+							key=SDLK_x;
 							ignore=0;
 						}
 						
 						
 						if(mod && event.type == SDL_KEYDOWN)
 						{
-							key=SDLK_x;//英文x，这里只要不冲突就行
+							key=SDLK_x;
 							mod=0;
-							use_mouse=1-use_mouse;//切换鼠标
-							ignore=1;//忽略下次y键的释放(fb会导致下一次是按压)
+							use_mouse=1-use_mouse;
+							ignore=1;
 						}
 					}
-					else if(key==SDLK_UP)//上
+					else if(key==SDLK_UP)
 					{
 						if(rotate==1)
 						{
@@ -485,7 +457,7 @@ void *startCapturing(void *args)
 							}
 						}
 					}
-					else if(key==SDLK_DOWN)//下
+					else if(key==SDLK_DOWN)
 					{
 						if(rotate==1)
 						{
@@ -510,7 +482,7 @@ void *startCapturing(void *args)
 							}
 						}
 					}
-					else if(key==SDLK_LEFT) //左
+					else if(key==SDLK_LEFT)
 					{
 						if(rotate==1)
 						{
@@ -535,7 +507,7 @@ void *startCapturing(void *args)
 							}
 						}
 					}
-					else if(key==SDLK_RIGHT) //右
+					else if(key==SDLK_RIGHT)
 					{
 						if(rotate==1)
 						{
@@ -568,16 +540,16 @@ void *startCapturing(void *args)
 						}
 						else
 						{
-							key=SDLK_x;//英文x，这里只要不冲突就行
+							key=SDLK_x;
 							ignore=0;
 						}
 						
 						
 						if(mod && event.type == SDL_KEYDOWN)
 						{
-							key=SDLK_c;//英文c，这里只要不冲突就行,但是这个c要发送到java
+							key=SDLK_c;
 							mod=0;
-							ignore=1;//(忽略下次释放)
+							ignore=1;
 						}
 						
 					}
@@ -601,12 +573,9 @@ void *startCapturing(void *args)
 					{
 						key=SDLK_9;
 					}
-					
-					
-					//按住select键
+
 					if(event.type == SDL_KEYDOWN && event.key.keysym.sym == M_select){mod=1;}
 					else if(event.type == SDL_KEYUP && event.key.keysym.sym == M_select){mod=0;}
-					
 					
 					if(!use_mouse)
 					{
@@ -684,30 +653,26 @@ void defaultKeymap()
 }
 
 int loadConfig() {
-    // 打开文件
     FILE *file = fopen("keymap.cfg", "r");
     if (file == NULL) {
-		std::cerr  << "打开文件失败" << std::endl;
+		std::cerr  << "Failed to open keymap.cfg file" << std::endl;
         return -1;
     }
  
-    // 确定文件长度
     fseek(file, 0, SEEK_END);
     long length = ftell(file);
     fseek(file, 0, SEEK_SET);
  
-    // 读取文件内容到字符串
     char *data = (char*)malloc(length + 1);
     fread(data, 1, length, file);
     data[length] = '\0';
     fclose(file);
  
-    // 解析JSON字符串
     cJSON *json = cJSON_Parse(data);
     if (json == NULL) {
         const char *error_ptr = cJSON_GetErrorPtr();
         if (error_ptr != NULL) {
-            fprintf(stderr, "解析json错误：%s\n", error_ptr);
+            fprintf(stderr, "json error：%s\n", error_ptr);
         }
         cJSON_Delete(json);
         free(data);
@@ -715,11 +680,10 @@ int loadConfig() {
     }
 	
 	try{
-		// 使用cJSON对象
-		cJSON *name = cJSON_GetObjectItem(json, "左键");
+		cJSON *name = cJSON_GetObjectItem(json, "Left");
 		KEY_LEFT=keyname2keycode(name->valuestring);
 		
-		name = cJSON_GetObjectItem(json, "右键");
+		name = cJSON_GetObjectItem(json, "Right");
 		KEY_RIGHT=keyname2keycode(name->valuestring);
 		
 		name = cJSON_GetObjectItem(json, "OK");
@@ -752,23 +716,19 @@ int loadConfig() {
 		
 		defaultKeymap();
 		
-		std::cerr << "解析json出错:"<<e.what() << std::endl;
+		std::cerr << "json error:"<<e.what() << std::endl;
 		return -1;
 	}
- 
- 
-    // 清理工作
+
     cJSON_Delete(json);
     free(data);
  
     return 0;
 }
 
-/*********************************************************************** Main */
 int main(int argc, char* argv[])
 {	
 	if ( argc != 3 ) {
-		std::cerr << "参数错误" << std::endl;
 		return 0;
 	}
 	source_width = atoi(argv[1]);
