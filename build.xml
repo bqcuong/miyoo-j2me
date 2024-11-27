@@ -7,11 +7,8 @@
 *    AWT, Libretro, SDL
 ****************************************************
 -->
-<!-- 定义类路径 -->
     <path id="project-classpath">
-        <!-- 添加项目自身的类路径 -->
         <pathelement location="build/classes"/>
-        <!-- 添加第三方JAR包 -->
         <fileset dir="lib">
             <include name="**/*.jar"/>
         </fileset>
@@ -46,7 +43,6 @@
 		<fileset dir="resources" />
 		<metainf dir="META-INF" />
 		<manifest>
-			<!-- Libretro Version -->
 			<attribute name="Main-Class" value="org.recompile.freej2me.Anbu"/>
 			<attribute name="Implementation-Title" value="FreeJ2ME"/>
 		</manifest>
