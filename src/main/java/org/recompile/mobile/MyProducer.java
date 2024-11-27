@@ -34,18 +34,14 @@ import org.objectweb.asm.ClassWriter;
 
 public class MyProducer {
 
-	public static byte[] instrument(final byte[] classData)
-			throws IllegalArgumentException {
-		ClassReader cr = new ClassReader(classData);
-		/* if (!cr.getClassName().equals(classFileName)) {
-			System.out.println(cr.getClassName()+" "+classFileName);
-			throw new IllegalArgumentException("Class name does not match path");
-		} */
+    public static byte[] instrument(final byte[] classData)
+        throws IllegalArgumentException {
+        ClassReader cr = new ClassReader(classData);
 
-		ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-		ClassVisitor cv = new MyClassVisitor(cw);
-		cr.accept(cv, ClassReader.SKIP_DEBUG);
+        ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
+        ClassVisitor cv = new MyClassVisitor(cw);
+        cr.accept(cv, ClassReader.SKIP_DEBUG);
 
-		return cw.toByteArray();
-	}
+        return cw.toByteArray();
+    }
 }

@@ -35,25 +35,25 @@ import org.objectweb.asm.Opcodes;
 
 public class MyClassVisitor extends ClassVisitor {
 
-	MyClassVisitor(ClassVisitor cv) {
-		super(Opcodes.ASM9, cv);
-	}
+    MyClassVisitor(ClassVisitor cv) {
+        super(Opcodes.ASM9, cv);
+    }
 
-	@Override
-	public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
-		desc = desc.replace("java/util/Timer", "javax/microedition/shell/custom/Timer");
-		return new MyMethodVisitor(super.visitMethod(access, name, desc, signature, exceptions));
-	}
+    @Override
+    public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
+        desc = desc.replace("java/util/Timer", "javax/microedition/shell/custom/Timer");
+        return new MyMethodVisitor(super.visitMethod(access, name, desc, signature, exceptions));
+    }
 
-	@Override
-	public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
-		superName = superName.replace("java/util/Timer", "javax/microedition/shell/custom/Timer");
-		super.visit(version, access, name, signature, superName, interfaces);
-	}
+    @Override
+    public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
+        superName = superName.replace("java/util/Timer", "javax/microedition/shell/custom/Timer");
+        super.visit(version, access, name, signature, superName, interfaces);
+    }
 
-	@Override
-	public FieldVisitor visitField(int access, String name, String descriptor, String signature, Object value) {
-		descriptor = descriptor.replace("java/util/Timer", "javax/microedition/shell/custom/Timer");
-		return super.visitField(access, name, descriptor, signature, value);
-	}
+    @Override
+    public FieldVisitor visitField(int access, String name, String descriptor, String signature, Object value) {
+        descriptor = descriptor.replace("java/util/Timer", "javax/microedition/shell/custom/Timer");
+        return super.visitField(access, name, descriptor, signature, value);
+    }
 }

@@ -16,135 +16,112 @@
 */
 package org.recompile.freej2me;
 
-import java.util.HashMap;
-
-
-import java.io.File;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileOutputStream;
-import java.io.BufferedWriter;
-import java.io.OutputStreamWriter;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
 import org.recompile.mobile.Mobile;
 
-public class SDLConfig
-{
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashMap;
 
-	private int width;
-	private int height;
+public class SDLConfig {
 
+    HashMap<String, String> settings = new HashMap<String, String>(6);
+    private int width;
+    private int height;
+    private File file;
+    private String configPath = "";
+    private String configFile = "";
 
-	private File file;
-	private String configPath = "";
-	private String configFile = "";
+    public SDLConfig() {
+        width = Mobile.getPlatform().lcdWidth;
+        height = Mobile.getPlatform().lcdHeight;
+    }
 
+    public void init(String appname) {
+        configPath = Mobile.getPlatform().dataPath + "./config/" + appname;
+        configFile = configPath + "/game.conf";
+        // Load Config
+        try {
+            Files.createDirectories(Paths.get(configPath));
+        } catch (Exception e) {
+            System.out.println("Problem Creating Config Path " + configPath);
+            System.out.println(e.getMessage());
+        }
 
+        try // Check Config File
+        {
+            file = new File(configFile);
+            if (!file.exists()) {
+                file.createNewFile();
+                settings.put("width", "" + width);
+                settings.put("height", "" + height);
+                settings.put("sound", "100");
+                settings.put("phone", "p");
+                settings.put("fps", "60");
+                saveConfig();
+            }
+        } catch (Exception e) {
+            System.out.println("Problem Opening Config " + configFile);
+            System.out.println(e.getMessage());
+        }
 
-	HashMap<String, String> settings = new HashMap<String, String>(6);
+        try // Read Records
+        {
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line;
+            String[] parts;
+            while ((line = reader.readLine()) != null) {
+                parts = line.split(":");
+                if (parts.length == 2) {
+                    parts[0] = parts[0].trim();
+                    parts[1] = parts[1].trim();
+                    if (parts[0] != "" && parts[1] != "") {
+                        settings.put(parts[0], parts[1]);
+                    }
+                }
+            }
+            if (!settings.containsKey("width")) {
+                settings.put("width", "" + width);
+            }
+            if (!settings.containsKey("height")) {
+                settings.put("height", "" + height);
+            }
+            if (!settings.containsKey("sound")) {
+                settings.put("sound", "100");
+            }
+            if (!settings.containsKey("phone")) {
+                settings.put("phone", "p");
+            }
+            if (!settings.containsKey("fps")) {
+                settings.put("fps", "60");
+            }
 
-	public SDLConfig()
-	{
-		width = Mobile.getPlatform().lcdWidth;
-		height = Mobile.getPlatform().lcdHeight;
-	}
+            int w = Integer.parseInt(settings.get("width"));
+            int h = Integer.parseInt(settings.get("height"));
+            if (width != w || height != h) {
+                width = w;
+                height = h;
+            }
+        } catch (Exception e) {
+            System.out.println("Problem Reading Config: " + configFile);
+            System.out.println(e.getMessage());
+        }
 
-	public void init(String appname)
-	{
-		//String appname = Mobile.getPlatform().loader.suitename;
-		configPath = Mobile.getPlatform().dataPath + "./config/"+appname;
-		configFile = configPath + "/game.conf";
-		// Load Config //
-		try
-		{
-			Files.createDirectories(Paths.get(configPath));
-		}
-		catch (Exception e)
-		{
-			System.out.println("Problem Creating Config Path "+configPath);
-			System.out.println(e.getMessage());
-		}
+    }
 
-		try // Check Config File
-		{
-			file = new File(configFile);
-			if(!file.exists())
-			{
-				file.createNewFile();
-				settings.put("width", ""+width);
-				settings.put("height", ""+height);
-				settings.put("sound", "100");
-				settings.put("phone", "p");
-				settings.put("fps", "60");
-				saveConfig();
-			}
-		}
-		catch (Exception e)
-		{
-			System.out.println("Problem Opening Config "+configFile);
-			System.out.println(e.getMessage());
-		}
+    public void saveConfig() {
+        try {
+            FileOutputStream fout = new FileOutputStream(file);
 
-		try // Read Records
-		{
-			BufferedReader reader = new BufferedReader(new FileReader(file));
-			String line;
-			String[] parts;
-			while((line = reader.readLine())!=null)
-			{
-				parts = line.split(":");
-				if(parts.length==2)
-				{
-					parts[0] = parts[0].trim();
-					parts[1] = parts[1].trim();
-					if(parts[0]!="" && parts[1]!="")
-					{
-						settings.put(parts[0], parts[1]);
-					}
-				}
-			}
-			if(!settings.containsKey("width")) { settings.put("width", ""+width); }
-			if(!settings.containsKey("height")) { settings.put("height", ""+height); }
-			if(!settings.containsKey("sound")) { settings.put("sound", "100"); }
-			if(!settings.containsKey("phone")) { settings.put("phone", "p"); }
-			if(!settings.containsKey("fps")) { settings.put("fps", "60"); }
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(fout));
 
-			int w = Integer.parseInt(settings.get("width"));
-			int h = Integer.parseInt(settings.get("height"));
-			if(width!=w || height!=h)
-			{
-				width = w;
-				height = h;
-			}
-		}
-		catch (Exception e)
-		{
-			System.out.println("Problem Reading Config: "+configFile);
-			System.out.println(e.getMessage());
-		}
-
-	}
-
-	public void saveConfig()
-	{
-		try
-		{
-			FileOutputStream fout = new FileOutputStream(file);
-
-			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(fout));
-
-			for (String key : settings.keySet())
-			{
-				writer.write(key+":"+settings.get(key)+"\n");
-			}
-			writer.close();
-		}
-		catch (Exception e)
-		{
-			System.out.println("Problem Opening Config "+configFile);
-			System.out.println(e.getMessage());
-		}
-	}
+            for (String key : settings.keySet()) {
+                writer.write(key + ":" + settings.get(key) + "\n");
+            }
+            writer.close();
+        } catch (Exception e) {
+            System.out.println("Problem Opening Config " + configFile);
+            System.out.println(e.getMessage());
+        }
+    }
 }
