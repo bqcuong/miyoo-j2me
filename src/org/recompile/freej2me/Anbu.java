@@ -137,7 +137,7 @@ public class Anbu {
 
         Mobile.setPlatform(new MobilePlatform(lcdWidth, lcdHeight));
         Mobile.getPlatform().dataPath = "./";
-        Mobile.getPlatform().rootPath = "/storage/roms/j2me/";
+        Mobile.getPlatform().rootPath = "/mnt/SDCARD/Emu/JAVA/";
 
         soundLevel = Integer.parseInt(args[3]);
         Audio.setVol(soundLevel);

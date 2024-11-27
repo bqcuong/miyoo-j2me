@@ -103,7 +103,7 @@ public class PlatformPlayer implements Player {
 
     public void close() {
         try {
-            stop();
+            player.stop();
             state = Player.CLOSED;
             notifyListeners(PlayerListener.CLOSED, null);
         } catch (Exception e) {
@@ -125,8 +125,6 @@ public class PlatformPlayer implements Player {
     public void stop() {
         try {
             player.stop();
-            notifyListeners(PlayerListener.STOPPED, null);
-
         } catch (Exception e) {
         }
     }
@@ -148,7 +146,8 @@ public class PlatformPlayer implements Player {
     public void deallocate() {
         stop();
         player.deallocate();
-        state = Player.REALIZED;
+        notifyListeners(PlayerListener.END_OF_MEDIA, 0);
+        state = Player.UNREALIZED;
     }
 
     public String getContentType() {
@@ -208,8 +207,6 @@ public class PlatformPlayer implements Player {
     public void musicFinish() {
         notifyListeners(PlayerListener.END_OF_MEDIA, 0);
     }
-
-    private native void _start(String bgmfile, int loop);
 
     private class audioplayer {
         public void start() {
@@ -306,7 +303,7 @@ public class PlatformPlayer implements Player {
                     frame[i + 6] = fname[i];
                 }
 
-                _start(bgmFileName, loops);
+                Audio.start(bgmFileName, loops);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
