@@ -24,6 +24,7 @@ build-jar:
 release:
 	rm -rf release && mkdir release
 	cp -r skeleton/* release/
+	find release -name "*.gitkeep" -delete
 
 	cp cpp/sdl2/sdl_interface release/
 	cp cpp/sdl2/keymap.cfg release/
@@ -31,6 +32,8 @@ release:
 	cp cpp/native/libaudio.so release/jlib/
 	cp cpp/native/libm3g.so release/jlib/
 	cp cpp/native/libmicro3d.so release/jlib/
+
+	cp build/freej2me-sdl.jar release/
 
 	cp -r shaders release/
 
