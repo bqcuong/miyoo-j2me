@@ -234,7 +234,6 @@ public class MobilePlatform {
             if (js.length > 0) {
                 if (js[js.length - 1].endsWith(".jar")) {
                     appname = js[js.length - 1].substring(0, js[js.length - 1].length() - 4);
-                    System.out.println("jar file name: " + appname);
                 }
             }
 
