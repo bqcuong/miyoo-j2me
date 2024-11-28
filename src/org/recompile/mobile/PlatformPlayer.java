@@ -93,7 +93,7 @@ public class PlatformPlayer implements Player {
                 sb.append(String.format("%02x", b));
             }
         } catch (Exception e) {
-            System.out.println("Exception encodeMD5String:" + e.getMessage());
+            System.out.println("Error encodeMD5String:" + e.getMessage());
         }
         return sb.toString();
 
@@ -244,7 +244,7 @@ public class PlatformPlayer implements Player {
                 try {
                     Files.createDirectories(Paths.get(rmsPath));
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
+                    System.out.println("Error create game rms folder:" + e.getMessage());
                 }
                 byte[] buffer = new byte[1024];
                 int len;
@@ -268,11 +268,11 @@ public class PlatformPlayer implements Player {
                         fos.close();
                     }
                     catch (Exception e) {
-                        System.out.println(e.getMessage());
+                        System.out.println("Error saving file: " + e.getMessage());
                     }
                 }
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                System.out.println("Error saving rms file: " + e.getMessage());
             }
         }
 
@@ -303,7 +303,7 @@ public class PlatformPlayer implements Player {
 
                 Audio.start(bgmFileName, loops);
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                System.out.println("Error starting sound: " + e.getMessage());
             }
             isrun = true;
             state = Player.STARTED;
@@ -324,7 +324,7 @@ public class PlatformPlayer implements Player {
                 }
             }
             catch (Exception e) {
-                System.out.println(e.getMessage());
+                System.out.println("Error stopping sound: " + e.getMessage());
             }
 
             isrun = false;

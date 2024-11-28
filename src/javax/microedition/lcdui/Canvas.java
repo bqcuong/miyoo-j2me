@@ -172,10 +172,8 @@ public abstract class Canvas extends Displayable
 				Mobile.getPlatform().repaint(platformImage, 0, 0, width, height);
 			}
 		}
-		catch (Exception e)
-		{
-			System.out.print("Canvas repaint(): "+e.getMessage());
-			e.printStackTrace();
+		catch (Exception e) {
+			System.out.print("Canvas repaint(): " + e.getMessage());
 		}
 	}
 

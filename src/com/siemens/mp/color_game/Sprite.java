@@ -97,7 +97,6 @@ public class Sprite	extends	Layer
 
 	public Sprite(Sprite s)
 	{
-		System.out.println("Sprite D");
 		image = s.image;
 	}
 

@@ -234,7 +234,7 @@ public class MobilePlatform {
             if (js.length > 0) {
                 if (js[js.length - 1].endsWith(".jar")) {
                     appname = js[js.length - 1].substring(0, js[js.length - 1].length() - 4);
-                    System.out.println("jar file name:" + appname);
+                    System.out.println("jar file name: " + appname);
                 }
             }
 
@@ -242,8 +242,7 @@ public class MobilePlatform {
             return true;
         }
         catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
+            System.out.println("Error loading jar: " + e.getMessage());
             return false;
         }
     }
@@ -253,8 +252,7 @@ public class MobilePlatform {
             loader.start();
         }
         catch (Exception e) {
-            System.out.println("Error Running Jar");
-            e.printStackTrace();
+            System.out.println("Error running jar: " + e.getMessage());
         }
     }
 

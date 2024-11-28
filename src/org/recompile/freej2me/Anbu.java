@@ -131,7 +131,7 @@ public class Anbu {
         if (js.length > 0) {
             if (js[js.length - 1].endsWith(".jar")) {
                 appname = js[js.length - 1].substring(0, js[js.length - 1].length() - 4);
-                System.out.println("jar file name:" + appname);
+                System.out.println("jar file name: " + appname);
             }
         }
 
@@ -255,7 +255,7 @@ public class Anbu {
             java.awt.Font tmpFont = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new File("./font.ttf"));
             globalFont = tmpFont.deriveFont(java.awt.Font.PLAIN, 12f);
         } catch (Exception e) {
-            System.err.println("Failed to load font: " + e.getMessage());
+            System.out.println("Failed to load font: " + e.getMessage());
             globalFont = new java.awt.Font("MiSans Normal", java.awt.Font.PLAIN, 12);
         }
         return globalFont;

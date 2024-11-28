@@ -261,7 +261,6 @@ public class MIDletLoader extends URLClassLoader {
             for (int i = 0; i < lines.size(); i++) {
                 line = lines.get(i);
                 if (line.startsWith("MIDlet-1:")) {
-                    System.out.println(line);
                     line = line.substring(9);
                     parts = line.split(",");
                     if (parts.length == 3) {

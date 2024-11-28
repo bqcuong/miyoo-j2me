@@ -65,8 +65,7 @@ public class PlatformImage extends javax.microedition.lcdui.Image {
 
                 gc.drawImage2(temp, 0, 0);
             } catch (Exception e) {
-                System.out.println("Couldn't Load Image Stream " + name);
-                e.printStackTrace();
+                System.out.println("Couldn't Load Image Stream " + name + ": " + e.getMessage());
                 isNull = true;
             }
         }
