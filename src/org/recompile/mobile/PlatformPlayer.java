@@ -56,13 +56,9 @@ public class PlatformPlayer implements Player {
             else if (type.equalsIgnoreCase("audio/mpeg") || type.equalsIgnoreCase("audio/x-wav") || type.equalsIgnoreCase("audio/wav")) {
                 player = new midiPlayer(stream, ".wav");
             }
-            else {
-                if (type.equalsIgnoreCase("audio/x-wav") || type.equalsIgnoreCase("audio/wav")) {
-                    player = new wavPlayer(stream);
-                } else /* TODO: Implement a player for amr and mpeg audio types */ {
-                    System.out.println("No Player For: " + contentType);
-                    player = new audioplayer();
-                }
+            else { /* TODO: Implement a player for amr and mpeg audio types */
+                System.out.println("No Player For: " + contentType);
+                player = new audioplayer();
             }
         }
         controls[0] = new volumeControl();
@@ -270,7 +266,8 @@ public class PlatformPlayer implements Player {
                             fos.write(buffer, 0, len);
                         }
                         fos.close();
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e) {
                         System.out.println(e.getMessage());
                     }
                 }
@@ -278,7 +275,6 @@ public class PlatformPlayer implements Player {
                 System.out.println(e.getMessage());
             }
         }
-
 
         public void start() {
             if (bgmFileName.equals("")) {
@@ -288,7 +284,6 @@ public class PlatformPlayer implements Player {
             if (isRunning() && bgmFileName.endsWith(".mid")) {
                 return;
             }
-
 
             try {
 
@@ -323,10 +318,12 @@ public class PlatformPlayer implements Player {
 
                 if (bgmFileName.endsWith(".mid")) {
                     Audio.stop(1);
-                } else if (bgmFileName.endsWith(".wav")) {
+                }
+                else if (bgmFileName.endsWith(".wav")) {
                     Audio.stop(2);
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 System.out.println(e.getMessage());
             }
 
@@ -340,7 +337,6 @@ public class PlatformPlayer implements Player {
 
         public void setLoopCount(int count) {
             loops = count;
-
         }
 
         public long setMediaTime(long now) {
