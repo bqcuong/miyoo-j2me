@@ -17,3 +17,4 @@ $(TARGET): $(OBJS1)
   
 clean:  
 	rm -f $(OBJS1)
+	rm -f $(TARGET)
