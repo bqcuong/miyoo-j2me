@@ -24,9 +24,9 @@ char name[100];
 
 bool isExit=false;
 
-JavaVM *m_jvm=NULL;  // Java虚拟机对象
+JavaVM *m_jvm=NULL;
 
-jobject m_jobj=NULL; // Java类对象
+jobject m_jobj=NULL;
 
 jmethodID m_onCallBack=NULL;
 std::string m_onCallBackMethod = "musicFinish";
@@ -45,12 +45,9 @@ bool endWith(const char* src, const char* str)
 	return true;
 }
 
-
-
 JNIEXPORT jint JNICALL  JNI_OnLoad(JavaVM* vm, void* reserved)
 {
 	JNIEnv* env = NULL;
- 
     if(vm->GetEnv((void**) &env, JNI_VERSION_10) != JNI_OK) {
        return -1;
     }
@@ -68,11 +65,9 @@ bool isAttachedCurrentThread(JNIEnv** env)
 	if(m_jvm->GetEnv((void**)env, JNI_VERSION_10) != JNI_OK) {
 	    m_jvm->AttachCurrentThread((void**)env, NULL);
 	    return true;
-	}
-	
+	}	
 	return false;
 }
-
 
 void musicFinished() {
     //printf("%s music end\n",name);
@@ -89,8 +84,6 @@ void musicFinished() {
 	}
 	
 }
-
-
 
 void quit()
 {
@@ -125,7 +118,6 @@ void quit()
         Mix_FreeChunk(wave);
         wave = NULL;
     }
-
 	
 	Mix_CloseAudio();
 	Mix_Quit();
@@ -135,8 +127,7 @@ void quit()
 }
 
 void changeBGM(const char* fname,int loop)
-{
-	
+{	
 	if(endWith(fname,".mid"))
 	{
 		if(Mix_PlayingMusic()) {
@@ -166,8 +157,6 @@ void changeBGM(const char* fname,int loop)
 				return;
 			}
 		}
-		
-		
 	}
 	else if(endWith(fname,".wav"))
 	{
@@ -184,17 +173,12 @@ void changeBGM(const char* fname,int loop)
 		wave = Mix_LoadWAV(fname);
 		if(wave!=NULL) {
 			Mix_VolumeChunk(wave, volumLevel);
-
-			//loops：指示音频是否应重复播放。0表示不重复，-1表示无限循环，其他正数表示重复的次数。
-			loop = loop>0 ? loop-1 : loop;
+			loop = loop > 0 ? loop - 1 : loop; // 0: no loop, -1: infinite loop, n: n times of loop
 			Mix_PlayChannel(0, wave, loop);
 		}
 	}
-
 	
 }
-
-
 
 /*
  * Class:     org_recompile_mobile_Audio
@@ -212,7 +196,6 @@ JNIEXPORT void JNICALL Java_org_recompile_mobile_Audio__1start(JNIEnv *aEnv, jcl
 	
 	//aEnv->ReleaseByteArrayElements(aBgm, (jbyte*)file, JNI_ABORT);
 	aEnv->ReleaseStringUTFChars(aBgm, str);
-	
 }
 
 /*
@@ -221,7 +204,6 @@ JNIEXPORT void JNICALL Java_org_recompile_mobile_Audio__1start(JNIEnv *aEnv, jcl
  * Signature: ()V
  */
 JNIEXPORT void JNICALL Java_org_recompile_mobile_Audio__1stop(JNIEnv *aEnv, jclass, jint type){
-	
 	if(type==1)//midi
 	{
 		if(Mix_PlayingMusic()) {
@@ -234,8 +216,6 @@ JNIEXPORT void JNICALL Java_org_recompile_mobile_Audio__1stop(JNIEnv *aEnv, jcla
 			Mix_HaltChannel(0);
 		}
 	}
-	
-	
 }
 
 JNIEXPORT void JNICALL Java_org_recompile_mobile_Audio__1setVol
@@ -278,7 +258,6 @@ JNIEXPORT void JNICALL Java_org_recompile_mobile_Audio__1destroy
 JNIEXPORT void JNICALL Java_org_recompile_mobile_PlatformPlayer__1start
   (JNIEnv *aEnv, jobject object, jstring aBgm, jint loop)
 {
-	// 初始化JavaVM对象，全局唯一
 	if(m_jvm==NULL)
 	{
 		aEnv->GetJavaVM(std::addressof(m_jvm));
@@ -289,7 +268,6 @@ JNIEXPORT void JNICALL Java_org_recompile_mobile_PlatformPlayer__1start
 		aEnv->DeleteGlobalRef(m_jobj);
 	}
 	
-
 	m_jobj = aEnv->NewGlobalRef(object);
 	if(m_onCallBack==NULL)
 	{
@@ -297,13 +275,9 @@ JNIEXPORT void JNICALL Java_org_recompile_mobile_PlatformPlayer__1start
 		m_onCallBack = aEnv->GetMethodID(m_jclz, m_onCallBackMethod.c_str(),
 									"()V");
 	}
-	//不需要释放GetObjectClass返回的cls，因为它通常是一个全局引用或弱全局引用								
-	//aEnv->DeleteLocalRef(m_jclz);
 		
 	const char *str = aEnv->GetStringUTFChars(aBgm, 0);
-	
 	changeBGM(str,loop);
-	
 	aEnv->ReleaseStringUTFChars(aBgm, str);
 }
 
