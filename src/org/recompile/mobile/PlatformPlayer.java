@@ -47,13 +47,16 @@ public class PlatformPlayer implements Player {
 
         if (Mobile.sound == false) {
             player = new audioplayer();
-        } else {
+        }
+        else {
             if (type.equalsIgnoreCase("audio/mid") || type.equalsIgnoreCase("audio/midi") || type.equalsIgnoreCase("sp-midi")
                 || type.equalsIgnoreCase("audio/spmidi")) {
                 player = new midiPlayer(stream, ".mid");
-            } else if (type.equalsIgnoreCase("audio/mpeg") || type.equalsIgnoreCase("audio/x-wav") || type.equalsIgnoreCase("audio/wav")) {
+            }
+            else if (type.equalsIgnoreCase("audio/mpeg") || type.equalsIgnoreCase("audio/x-wav") || type.equalsIgnoreCase("audio/wav")) {
                 player = new midiPlayer(stream, ".wav");
-            } else {
+            }
+            else {
                 if (type.equalsIgnoreCase("audio/x-wav") || type.equalsIgnoreCase("audio/wav")) {
                     player = new wavPlayer(stream);
                 } else /* TODO: Implement a player for amr and mpeg audio types */ {
