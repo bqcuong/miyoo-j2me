@@ -134,9 +134,8 @@ public class MIDletLoader extends URLClassLoader {
             System.setProperty("microedition.platform", "Nokia7650");
             System.setProperty("microedition.profiles", "MIDP-2.0");
             System.setProperty("microedition.configuration", "CLDC-1.0");
-            System.setProperty("microedition.locale", "zh-CN");
+            System.setProperty("microedition.locale", "en-US");
             System.setProperty("microedition.encoding", "UTF-8");
-            //System.setProperty("os.name", "Nokia7650");
             System.setProperty("supports.mixing", "false");
         } catch (Exception e) {
             System.out.println("Can't add CLDC System Properties");
@@ -148,9 +147,8 @@ public class MIDletLoader extends URLClassLoader {
             properties.put("microedition.platform", "Nokia7650");
             properties.put("microedition.profiles", "MIDP-2.0");
             properties.put("microedition.configuration", "CLDC-1.0");
-            properties.put("microedition.locale", "zh-CN");
+            properties.put("microedition.locale", "en-US");
             properties.put("microedition.encoding", "UTF-8");
-            //properties.put("os.name", "Nokia7650");
             properties.put("supports.mixing", "false");
         } catch (Exception e) {
             System.out.println("Can't Read Manifest!");
@@ -461,5 +459,4 @@ public class MIDletLoader extends URLClassLoader {
             return t;
         }
     }
-
 }
