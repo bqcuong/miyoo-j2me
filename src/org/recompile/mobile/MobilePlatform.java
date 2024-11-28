@@ -240,19 +240,19 @@ public class MobilePlatform {
 
             loader = new MIDletLoader(new URL[]{jar}, jarurl, appname + lcdWidth + lcdHeight);
             return true;
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             System.out.println(e.getMessage());
             e.printStackTrace();
             return false;
         }
-
     }
-
 
     public void runJar() {
         try {
             loader.start();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             System.out.println("Error Running Jar");
             e.printStackTrace();
         }
@@ -260,13 +260,11 @@ public class MobilePlatform {
 
     public void flushGraphics(Image img, int x, int y, int width, int height) {
         gc.flushGraphics(img, x, y, width, height);
-
         painter.run();
     }
 
     public void repaint(Image img, int x, int y, int width, int height) {
         gc.flushGraphics(img, x, y, width, height);
-
         painter.run();
 
     }

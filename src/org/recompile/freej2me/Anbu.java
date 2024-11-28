@@ -206,7 +206,8 @@ public class Anbu {
                     sdl.frame.write(frame);
                     sdl.frame.flush();
 
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     System.out.println("Failed to write sdl_interface");
                     System.out.println(e.getMessage());
 
@@ -214,7 +215,7 @@ public class Anbu {
                         @Override
                         public void run() {
                             try {
-                                Thread.sleep(2000); // 休眠2秒
+                                Thread.sleep(2000);
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
@@ -226,7 +227,6 @@ public class Anbu {
                     Mobile.destroy();
                     Audio.destroy();
                     System.exit(0);
-
                 }
             }
         };
@@ -235,7 +235,8 @@ public class Anbu {
         if (Mobile.getPlatform().loadJar(args[0])) {
             sdl.start();
             Mobile.getPlatform().runJar();
-        } else {
+        }
+        else {
             System.out.println("Couldn't load jar...");
             System.exit(0);
         }

@@ -30,7 +30,6 @@ import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-
 public class MIDletLoader extends URLClassLoader {
     public String name;
     public String icon;
@@ -128,11 +127,11 @@ public class MIDletLoader extends URLClassLoader {
             URI uri = URI.create(url);
             zipfs = FileSystems.newFileSystem(uri, env);
         } catch (Exception e) {
-            System.out.println("创建zip文件系统出错: " + e.getMessage());
+            System.out.println("Error creating zip file: " + e.getMessage());
         }
 
         try {
-            System.setProperty("microedition.platform", "Nokia7650");//这个很重要
+            System.setProperty("microedition.platform", "Nokia7650");
             System.setProperty("microedition.profiles", "MIDP-2.0");
             System.setProperty("microedition.configuration", "CLDC-1.0");
             System.setProperty("microedition.locale", "zh-CN");
@@ -242,7 +241,6 @@ public class MIDletLoader extends URLClassLoader {
                 }
             }
         }
-
 
         String line;
         String[] parts;
