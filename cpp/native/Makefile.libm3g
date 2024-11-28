@@ -1,5 +1,5 @@
-C_COMPILER = arm-linux-gnueabihf-gcc
-CPP_COMPILER = arm-linux-gnueabihf-g++
+C_COMPILER = /opt/mmiyoo/bin/arm-linux-gnueabihf-gcc
+CPP_COMPILER = /opt/mmiyoo/bin/arm-linux-gnueabihf-g++
 #-DM3G_TARGET_ANDROID  -DM3G_DEBUG -DM3G_NATIVE_LOADER -DM3G_NGL_CONTEXT_API -DDO_SOMETHING
 CFLAGS = -O3 -fno-strict-aliasing -DM3G_GL_ES_1_1 -DM3G_TARGET_GENERIC -DM3G_MAX_GL_CONTEXTS=1 -DM3G_MAX_GL_SURFACES=1 -fPIC -marm -mtune=cortex-a7 -march=armv7ve+simd -mfpu=neon-vfpv4 -mfloat-abi=hard -I./m3g/inc -I./include -I./include/linux
 
