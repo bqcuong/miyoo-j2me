@@ -410,8 +410,8 @@ public class Anbu {
                 return Mobile.KEY_POUND;  ////SDLK_r
 
             case 0x64:
-                if (soundLevel > 20)
-                    soundLevel -= 20;
+                if (soundLevel > 10)
+                    soundLevel -= 10;
                 else
                     soundLevel = 0;
                 Audio.setVol(soundLevel);
@@ -419,8 +419,8 @@ public class Anbu {
                 config.saveConfig();
                 break;
             case 0x75:
-                if (soundLevel < 80)
-                    soundLevel += 20;
+                if (soundLevel < 90)
+                    soundLevel += 10;
                 else
                     soundLevel = 100;
                 Audio.setVol(soundLevel);

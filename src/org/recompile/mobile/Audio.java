@@ -1,8 +1,8 @@
 package org.recompile.mobile;
 
 public class Audio {
-    static public void start(String bgmfile, int loop) {
-        _start(bgmfile, loop);
+    static public void start(String soundFile, int loop) {
+        _start(soundFile, loop);
     }
 
     static public void stop(int type) {
@@ -17,7 +17,11 @@ public class Audio {
         _destroy();
     }
 
-    private native static void _start(String bgmfile, int loop);
+    public void onCallback(String message) {
+        System.out.println("Callback received in class Audio: " + message);
+    }
+
+    private native static void _start(String soundFile, int loop);
 
     private native static void _stop(int type);
 

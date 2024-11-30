@@ -75,6 +75,10 @@ public class PlatformPlayer implements Player {
         Log.d(TAG, "Player locator: " + locator);
     }
 
+    public void onCallback(String message) {
+        System.out.println("Callback received in class PlatformPlayer: " + message);
+    }
+
     final public String encodeMD5String(byte[] data) {
         StringBuilder sb = new StringBuilder();
         try {
@@ -405,7 +409,8 @@ public class PlatformPlayer implements Player {
 
                 if (savedFile.endsWith(".mid")) {
                     Audio.stop(1);
-                } else if (savedFile.endsWith(".wav")) {
+                }
+                else if (savedFile.endsWith(".wav")) {
                     Audio.stop(2);
                 }
             }
