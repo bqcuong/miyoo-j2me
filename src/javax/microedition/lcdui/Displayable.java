@@ -18,12 +18,14 @@ package javax.microedition.lcdui;
 
 import java.util.ArrayList;
 
+import android.util.Log;
 import org.recompile.mobile.Mobile;
 import org.recompile.mobile.PlatformImage;
 import org.recompile.mobile.PlatformGraphics;
 
 public abstract class Displayable
 {
+	static public final String TAG = Displayable.class.getSimpleName();
 
 	public PlatformImage platformImage;
 
@@ -63,7 +65,7 @@ public abstract class Displayable
 		}
 		catch (Exception e)
 		{
-			System.out.println("Problem Adding Command: "+e.getMessage());
+			Log.d(TAG, "Problem Adding Command: "+e.getMessage());
 		}
 	}
 

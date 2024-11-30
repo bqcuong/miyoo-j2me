@@ -21,6 +21,7 @@ import java.io.OutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 
+import android.util.Log;
 import org.recompile.mobile.Mobile;
 
 import org.microemu.microedition.ImplFactory;
@@ -28,6 +29,7 @@ import java.io.IOException;
 
 public class Connector
 {
+	static public final String TAG = Connector.class.getSimpleName();
 
 	public static final int READ = 1;
 	public static final int READ_WRITE = 3;
@@ -36,7 +38,7 @@ public class Connector
 	
 	public static InputStream openInputStream(String name) throws IOException
 	{
-		System.out.println("Connector: " + name);
+		Log.d(TAG, "Connector: " + name);
 		if(name.startsWith("resource:")) // older Siemens phones?
 		{
 			return Mobile.getPlatform().loader.getMIDletResourceAsSiemensStream(name.substring(9));
@@ -44,7 +46,7 @@ public class Connector
 		/*else
 		{
 			//return Mobile.getPlatform().loader.getMIDletResourceAsStream(name); // possible
-			System.out.println("Faked InputStream for "+name); // just in case //
+			Log.d(TAG, "Faked InputStream for "+name); // just in case //
 			return new fakeIS();
 		} */
 		return ImplFactory.getCGFImplementation(name).openInputStream(name);
@@ -54,7 +56,7 @@ public class Connector
 
 	public static DataInputStream openDataInputStream(String name) throws IOException
 	{
-		/* System.out.println("Faked DataInputStream: "+name);
+		/* Log.d(TAG, "Faked DataInputStream: "+name);
 		return new DataInputStream(new fakeIS()); */
 		return ImplFactory.getCGFImplementation(name).openDataInputStream(name);
 	}
@@ -62,7 +64,7 @@ public class Connector
 
 
 	public static Connection open(String name) throws IOException { 
-		//System.out.println("Connector: " + name);
+		//Log.d(TAG, "Connector: " + name);
 		
 		
 		/* Throwable ex = new Throwable();
@@ -79,9 +81,9 @@ public class Connector
 
 			System.out.print(stackElements[i].getLineNumber()+":");
 
-			System.out.println(stackElements[i].getMethodName());
+			Log.d(TAG, stackElements[i].getMethodName());
 
-			System.out.println("-----------------------------------");
+			Log.d(TAG, "-----------------------------------");
 
 			}
 
@@ -96,23 +98,23 @@ public class Connector
 	}
 
 	public static Connection open(String name, int mode) throws IOException {
-		//System.out.println("Connector: " + name);
+		//Log.d(TAG, "Connector: " + name);
 		return ImplFactory.getCGFImplementation(name).open(name, mode);
 	}
 
 	public static Connection open(String name, int mode, boolean timeouts) throws IOException {
-		//System.out.println("Connector: " + name);
+		//Log.d(TAG, "Connector: " + name);
 		return ImplFactory.getCGFImplementation(name).open(name, mode, timeouts);
 	}
 
 	public static DataOutputStream openDataOutputStream(String name) throws IOException{ 
 		/* return new DataOutputStream(new fakeOS());  */
-		//System.out.println("Connector: " + name);
+		//Log.d(TAG, "Connector: " + name);
 		return ImplFactory.getCGFImplementation(name).openDataOutputStream(name);
 	}
 
 	public static OutputStream openOutputStream(String name) throws IOException {
-		//System.out.println("Connector: " + name);
+		//Log.d(TAG, "Connector: " + name);
 		/* return new fakeOS();  */
 		return ImplFactory.getCGFImplementation(name).openOutputStream(name);
 	}

@@ -16,6 +16,8 @@
 */
 package org.recompile.mobile;
 
+import android.util.Log;
+
 import javax.imageio.ImageIO;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.Sprite;
@@ -26,6 +28,8 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 public class PlatformImage extends javax.microedition.lcdui.Image {
+    static public final String TAG = PlatformImage.class.getSimpleName();
+    
     public boolean isNull = false;
     protected BufferedImage canvas;
     protected PlatformGraphics gc;
@@ -52,7 +56,7 @@ public class PlatformImage extends javax.microedition.lcdui.Image {
         InputStream stream = Mobile.getPlatform().loader.getMIDletResourceAsStream(name);
 
         if (stream == null) {
-            System.out.println("Couldn't Load Image Stream (can't find " + name + ")");
+            Log.d(TAG, "Couldn't Load Image Stream (can't find " + name + ")");
             isNull = true;
         } else {
             try {
@@ -65,7 +69,7 @@ public class PlatformImage extends javax.microedition.lcdui.Image {
 
                 gc.drawImage2(temp, 0, 0);
             } catch (Exception e) {
-                System.out.println("Couldn't Load Image Stream " + name + ": " + e.getMessage());
+                Log.d(TAG, "Couldn't Load Image Stream " + name + ": " + e.getMessage());
                 isNull = true;
             }
         }
@@ -85,7 +89,7 @@ public class PlatformImage extends javax.microedition.lcdui.Image {
 
             gc.drawImage2(temp, 0, 0);
         } catch (Exception e) {
-            System.out.println("Couldn't Load Image Stream");
+            Log.d(TAG, "Couldn't Load Image Stream");
             isNull = true;
         }
 
@@ -121,7 +125,7 @@ public class PlatformImage extends javax.microedition.lcdui.Image {
 
             gc.drawImage2(temp, 0, 0);
         } catch (Exception e) {
-            System.out.println("Couldn't Load Image Data From Byte Array");
+            Log.d(TAG, "Couldn't Load Image Data From Byte Array");
             canvas = new BufferedImage(Mobile.getPlatform().lcdWidth, Mobile.getPlatform().lcdHeight, BufferedImage.TYPE_INT_ARGB);
             createGraphics();
             isNull = true;

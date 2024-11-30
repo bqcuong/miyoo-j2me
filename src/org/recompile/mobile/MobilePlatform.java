@@ -16,12 +16,15 @@
 */
 package org.recompile.mobile;
 
+import android.util.Log;
+
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.game.GameCanvas;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 
 public class MobilePlatform {
+    static public final String TAG = MobilePlatform.class.getSimpleName();
 
     public int lcdWidth;
     public int lcdHeight;
@@ -227,7 +230,7 @@ public class MobilePlatform {
                 jar = new URL(jarurl);
             }
 
-            System.out.println("[jar file url] " + jar);
+            Log.d(TAG, "[jar file url] " + jar);
 
             String appname = "";
             String[] js = jarurl.split("/");
@@ -241,7 +244,7 @@ public class MobilePlatform {
             return true;
         }
         catch (Exception e) {
-            System.out.println("Error loading jar: " + e.getMessage());
+            Log.d(TAG, "Error loading jar: " + e.getMessage());
             return false;
         }
     }
@@ -251,7 +254,7 @@ public class MobilePlatform {
             loader.start();
         }
         catch (Exception e) {
-            System.out.println("Error running jar: " + e.getMessage());
+            Log.d(TAG, "Error running jar: " + e.getMessage());
         }
     }
 

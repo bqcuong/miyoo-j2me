@@ -17,6 +17,7 @@
 
 package com.siemens.mp.game;
 
+import android.util.Log;
 import org.recompile.mobile.Mobile;
 import org.recompile.mobile.PlatformImage;
 import org.recompile.mobile.PlatformGraphics;
@@ -28,6 +29,8 @@ import com.siemens.mp.misc.NativeMem;
 
 public class ExtendedImage extends com.siemens.mp.misc.NativeMem
 {
+	static public final String TAG = ExtendedImage.class.getSimpleName();
+	
 	private int[] palette = { 0xFF000000, 0xFFFFFFFF };
 
 	private PlatformImage image;
@@ -56,12 +59,12 @@ public class ExtendedImage extends com.siemens.mp.misc.NativeMem
 	public void setPixel(int x, int y, byte color)
 	{
 		image.setPixel(x, y, palette[color & 0x1]);
-		System.out.println("setPixels");
+		Log.d(TAG, "setPixels");
 	}
 
 	public void getPixelBytes(byte[] pixels, int x, int y, int width, int height) { }
 
-	public void setPixels(byte[] pixels, int x, int y, int width, int height) { System.out.println("setPixels"); }
+	public void setPixels(byte[] pixels, int x, int y, int width, int height) { Log.d(TAG, "setPixels"); }
 
 	public void clear(byte color)
 	{

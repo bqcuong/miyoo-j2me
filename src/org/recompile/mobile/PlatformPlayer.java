@@ -16,6 +16,8 @@
 */
 package org.recompile.mobile;
 
+import android.util.Log;
+
 import javax.microedition.media.Control;
 import javax.microedition.media.Player;
 import javax.microedition.media.PlayerListener;
@@ -28,6 +30,7 @@ import java.security.MessageDigest;
 import java.util.Vector;
 
 public class PlatformPlayer implements Player {
+    static public final String TAG = PlatformPlayer.class.getSimpleName();
 
     private String contentType = "";
 
@@ -44,7 +47,7 @@ public class PlatformPlayer implements Player {
         controls = new Control[3];
         contentType = type;
 
-        System.out.println("media type: " + type);
+        Log.d(TAG, "media type: " + type);
 
         if (!Mobile.sound) {
             player = new audioplayer();
@@ -58,7 +61,7 @@ public class PlatformPlayer implements Player {
                 player = new midiPlayer(stream, ".wav");
             }
             else { /* TODO: Implement a player for amr and mpeg audio types */
-                System.out.println("No Player For: " + contentType);
+                Log.d(TAG, "No Player For: " + contentType);
                 player = new audioplayer();
             }
         }
@@ -71,7 +74,7 @@ public class PlatformPlayer implements Player {
         player = new audioplayer();
         listeners = new Vector<>();
         controls = new Control[3];
-        System.out.println("Player locator: " + locator);
+        Log.d(TAG, "Player locator: " + locator);
     }
 
     public String encodeHexString(byte[] data, int len) {
@@ -92,7 +95,7 @@ public class PlatformPlayer implements Player {
                 sb.append(String.format("%02x", b));
             }
         } catch (Exception e) {
-            System.out.println("Error encodeMD5String:" + e.getMessage());
+            Log.d(TAG, "Error encodeMD5String:" + e.getMessage());
         }
         return sb.toString();
 
@@ -244,7 +247,7 @@ public class PlatformPlayer implements Player {
                     Files.createDirectories(Paths.get(rmsPath));
                 }
                 catch (Exception e) {
-                    System.out.println("Error create game rms folder:" + e.getMessage());
+                    Log.d(TAG, "Error create game rms folder:" + e.getMessage());
                 }
                 byte[] buffer = new byte[1024];
                 int len;
@@ -268,11 +271,11 @@ public class PlatformPlayer implements Player {
                         fos.close();
                     }
                     catch (Exception e) {
-                        System.out.println("Error saving file: " + e.getMessage());
+                        Log.d(TAG, "Error saving file: " + e.getMessage());
                     }
                 }
             } catch (Exception e) {
-                System.out.println("Error saving rms file: " + e.getMessage());
+                Log.d(TAG, "Error saving rms file: " + e.getMessage());
             }
         }
 
@@ -304,7 +307,7 @@ public class PlatformPlayer implements Player {
                 Audio.start(bgmFileName, loops);
             }
             catch (Exception e) {
-                System.out.println("Error starting sound: " + e.getMessage());
+                Log.d(TAG, "Error starting sound: " + e.getMessage());
             }
             isrun = true;
             state = Player.STARTED;
@@ -325,7 +328,7 @@ public class PlatformPlayer implements Player {
                 }
             }
             catch (Exception e) {
-                System.out.println("Error stopping sound: " + e.getMessage());
+                Log.d(TAG, "Error stopping sound: " + e.getMessage());
             }
 
             isrun = false;

@@ -23,6 +23,8 @@
 
 package com.siemens.mp.color_game;
 
+import android.util.Log;
+
 import java.util.Vector;
 
 import javax.microedition.lcdui.Graphics;
@@ -30,6 +32,7 @@ import javax.microedition.lcdui.Image;
 
 public class Sprite	extends	Layer
 {
+	static public final String TAG = Sprite.class.getSimpleName();
 
 	public static final	int	TRANS_MIRROR = 2;
 	public static final	int	TRANS_MIRROR_ROT180	= 1;
@@ -65,12 +68,12 @@ public class Sprite	extends	Layer
 
 	public Sprite()
 	{
-		System.out.println("Sprite A");
+		Log.d(TAG, "Sprite A");
 	}
 
 	public Sprite(Image img)
 	{
-		//System.out.println("Sprite B"); // used in wizardry.jar
+		//Log.d(TAG, "Sprite B"); // used in wizardry.jar
 		setImage(img, img.getWidth(), img.getHeight());
 		imgWidth = img.getWidth();
 		imgHeight = img.getHeight();
@@ -83,8 +86,8 @@ public class Sprite	extends	Layer
 
 	public Sprite(Image img, int frameW, int frameH)
 	{
-		//System.out.println("Sprite C"); // used in wizardry.jar
-		//System.out.println("Sprite C: "+frameW+", "+frameH+" of "+img.getWidth()+", "+img.getHeight());
+		//Log.d(TAG, "Sprite C"); // used in wizardry.jar
+		//Log.d(TAG, "Sprite C: "+frameW+", "+frameH+" of "+img.getWidth()+", "+img.getHeight());
 		setImage(img, frameW, frameH);
 		imgWidth = img.getWidth();
 		imgHeight = img.getHeight();
@@ -177,7 +180,7 @@ public class Sprite	extends	Layer
 		}
 		catch (Exception e)
 		{
-			System.out.println("Problem drawing sprite");
+			Log.d(TAG, "Problem drawing sprite");
 		}
 	}
 
@@ -197,7 +200,7 @@ public class Sprite	extends	Layer
 
 	public void setFrameSequence(int[] fsequence)
 	{
-		//System.out.println("Set Frame Sequence");
+		//Log.d(TAG, "Set Frame Sequence");
 		try
 		{
 			frame = 0;
@@ -209,7 +212,7 @@ public class Sprite	extends	Layer
 		}
 		catch (Exception e)
 		{
-			System.out.println("Problem with Sequence");
+			Log.d(TAG, "Problem with Sequence");
 		}
 	}
 

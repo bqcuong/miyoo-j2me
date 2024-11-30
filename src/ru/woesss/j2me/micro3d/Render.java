@@ -181,7 +181,7 @@ public class Render {
 		Rectangle clipBounds = this.targetGraphics.getGraphics2D().getClipBounds();  
         if (clipBounds != null) {  
             clip.set(clipBounds.x,clipBounds.y,clipBounds.x+clipBounds.width,clipBounds.y+clipBounds.height);
-			//System.out.println("clip: left " +clip.left+" top "+clip.top+" right "+clip.right+" bottom "+clip.bottom);
+			//Log.d(TAG, "clip: left " +clip.left+" top "+clip.top+" right "+clip.right+" bottom "+clip.bottom);
         }
 		
 		
@@ -1537,7 +1537,7 @@ public class Render {
 		
 		/* if(a!=0xff)
 		{
-			System.out.println("alpha "+a);
+			Log.d(TAG, "alpha "+a);
 		} */
 		
 		//return ( a<< 24) | ( (g)<< 16) | ((b)<< 8) | (b); //保留 

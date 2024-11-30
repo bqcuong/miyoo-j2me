@@ -18,13 +18,15 @@ package javax.microedition.lcdui;
 
 import java.util.ArrayList;
 
+import android.util.Log;
+import org.lwjgl.demo.egl.EGLDemo;
 import org.recompile.mobile.Mobile;
 import org.recompile.mobile.PlatformImage;
 import org.recompile.mobile.PlatformGraphics;
 
 public class Gauge extends Item
 {
-
+	static public final String TAG = Gauge.class.getSimpleName();
 	public static final int CONTINUOUS_IDLE = 0;
 	public static final int CONTINUOUS_RUNNING = 2;
 	public static final int INCREMENTAL_IDLE = 1;
@@ -45,7 +47,7 @@ public class Gauge extends Item
 
 	public Gauge(String label, boolean isInteractive, int maxvalue, int initialvalue)
 	{
-		System.out.println("Create Gauge");
+		Log.d(TAG, "Create Gauge");
 		setLabel(label);
 		interactive = isInteractive;
 		maxValue = maxvalue;

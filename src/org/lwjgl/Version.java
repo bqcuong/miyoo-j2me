@@ -4,6 +4,8 @@
  */
 package org.lwjgl;
 
+import android.util.Log;
+
 import javax.annotation.*;
 import java.io.*;
 import java.net.*;
@@ -12,6 +14,8 @@ import java.util.jar.*;
 
 /** This class can be used to query the LWJGL version. */
 public final class Version {
+
+    static public final String TAG = Version.class.getSimpleName();
 
     /** Current version of library. */
     public static final int
@@ -33,7 +37,7 @@ public final class Version {
     }
 
     public static void main(String[] args) {
-        System.out.println(version);
+        Log.d(TAG, version);
         System.err.println(versionPlain);
     }
 

@@ -28,6 +28,7 @@ import javax.microedition.lcdui.Graphics;
 
 import java.awt.image.BufferedImage;
 
+import android.util.Log;
 import org.recompile.mobile.PlatformGraphics;
 
 import org.recompile.mobile.Mobile;
@@ -38,6 +39,8 @@ import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 
 public class Graphics3D {
+	static public final String TAG = Graphics3D.class.getSimpleName();
+
 	//------------------------------------------------------------------
 	// Static data
 	//------------------------------------------------------------------
@@ -155,11 +158,11 @@ public class Graphics3D {
 		
 		integrityCheck();
 		if (currentTarget != null) {
-			//System.out.println("bindTarget IllegalStateException");
+			//Log.d(TAG, "bindTarget IllegalStateException");
 			throw new IllegalStateException();
 		}
 		if (target == null) {
-			//System.out.println("bindTarget NullPointerException");
+			//Log.d(TAG, "bindTarget NullPointerException");
 			throw new NullPointerException();
 		}
 
@@ -168,7 +171,7 @@ public class Graphics3D {
 		
 		if (target instanceof PlatformGraphics) {
 			
-			//System.out.println("bindTarget 3d in");
+			//Log.d(TAG, "bindTarget 3d in");
 			
 			final PlatformGraphics finalG = (PlatformGraphics) target;
 			final int clipX = finalG.getClipX() + finalG.getTranslateX();
@@ -217,10 +220,10 @@ public class Graphics3D {
 			cur_width = width;
 			cur_height = height;
 			
-			//System.out.println("bindTarget 3d ok");
+			//Log.d(TAG, "bindTarget 3d ok");
 			
 		} else if (target instanceof Image2D) {
-			//System.out.println("bindTarget 2d in");
+			//Log.d(TAG, "bindTarget 2d in");
 			
 			Image2D img = (Image2D) target;
 
@@ -238,18 +241,18 @@ public class Graphics3D {
 					});
 			currentTarget = img;
 			
-			//System.out.println("bindTarget 2d ok");
+			//Log.d(TAG, "bindTarget 2d ok");
 			
 		} else {
 			
-			//System.out.println("bindTarget IllegalArgumentException2");
+			//Log.d(TAG, "bindTarget IllegalArgumentException2");
 			throw new IllegalArgumentException();
 		}
 
 		hints = flags;
 		depthEnabled = depth;
 		
-		//System.out.println("bindTarget");
+		//Log.d(TAG, "bindTarget");
 	}
 
 	/**
@@ -259,12 +262,12 @@ public class Graphics3D {
 		integrityCheck();
 		if (currentTarget == null) {
 			
-			//System.out.println("releaseTarget null");
+			//Log.d(TAG, "releaseTarget null");
 			
 			return;
 		}
 		if (currentTarget instanceof PlatformGraphics) {
-			//System.out.println("releaseTarget 3d in");
+			//Log.d(TAG, "releaseTarget 3d in");
 			
 			
 			final int width = buffer.getWidth();
@@ -272,7 +275,7 @@ public class Graphics3D {
 			
 			/* int[] data=new int[width*height];
 			
-			System.out.println("[java releaseTarget handle:]"+Long.toHexString(handle));
+			Log.d(TAG, "[java releaseTarget handle:]"+Long.toHexString(handle));
 			_releaseGraphics(handle, 0, iIsImageTarget, iIsProperRenderer);
 			
 			pixelsBuffer.rewind();
@@ -298,10 +301,10 @@ public class Graphics3D {
 						}
 					});
 					
-			//System.out.println("releaseTarget 3d ok");
+			//Log.d(TAG, "releaseTarget 3d ok");
 					
 		} else if (currentTarget instanceof Image2D) {
-			//System.out.println("releaseTarget 2d in");
+			//Log.d(TAG, "releaseTarget 2d in");
 			
 			/* _releaseImage(handle); */
 			
@@ -313,16 +316,16 @@ public class Graphics3D {
 						}
 					});
 					
-			//System.out.println("releaseTarget 2d ok");
+			//Log.d(TAG, "releaseTarget 2d ok");
 		} else {
 			
 			
-			//System.out.println("releaseTarget Error");
+			//Log.d(TAG, "releaseTarget Error");
 			throw new Error();
 		}
 		currentTarget = null;
 		
-		//System.out.println("releaseTarget");
+		//Log.d(TAG, "releaseTarget");
 	}
 	
 	/**
@@ -429,7 +432,7 @@ public class Graphics3D {
 	 *
 	 */
 	public void render(Node node, Transform transform) {
-		//System.out.println("render in");
+		//Log.d(TAG, "render in");
 		
 		if (!(node instanceof Mesh
 				|| node instanceof Sprite3D
@@ -455,7 +458,7 @@ public class Graphics3D {
 								finalTransform != null ? finalTransform.matrix : null);
 					}
 				});
-		//System.out.println("render out");
+		//Log.d(TAG, "render out");
 	}
 
 
@@ -615,13 +618,13 @@ public class Graphics3D {
 
 	private void integrityCheck() {
 		if (iInterface == null) {
-			//System.out.println("iInterface null");
+			//Log.d(TAG, "iInterface null");
 			throw new RuntimeException("Graphics3D closed");
 		}
 		if (!iNativeInitialized) {
 			// If native interface cannot be initialized we cannot recover from it
 			if (!initNativePeer()) {
-				//System.out.println("initNativePeer null");
+				//Log.d(TAG, "initNativePeer null");
 				throw new Error("UI thread not available");
 			}
 		}
@@ -637,7 +640,7 @@ public class Graphics3D {
 			return true;
 		}
 		if (iInterface.isFullyInitialized() && Platform.uiThreadAvailable()) {
-			System.out.println("[java] Interface Handle:"+Interface.getHandle()+" hex:"+Long.toHexString(Interface.getHandle()));
+			Log.d(TAG, "[java] Interface Handle:"+Interface.getHandle()+" hex:"+Long.toHexString(Interface.getHandle()));
 			
 			handle = _ctor(Interface.getHandle());
 			_addRef(handle);
@@ -654,7 +657,7 @@ public class Graphics3D {
 					});
 			iNativeInitialized = true;
 			
-			System.out.println("[java] Graphics3D handle:"+handle+" hex:"+Long.toHexString(handle));
+			Log.d(TAG, "[java] Graphics3D handle:"+handle+" hex:"+Long.toHexString(handle));
 			
 			return true;
 		} else {

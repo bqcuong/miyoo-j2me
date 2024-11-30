@@ -16,6 +16,7 @@
 */
 package org.recompile.freej2me;
 
+import android.util.Log;
 import org.recompile.mobile.Mobile;
 
 import java.io.*;
@@ -24,6 +25,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 
 public class SDLConfig {
+    static public final String TAG = SDLConfig.class.getSimpleName();
 
     HashMap<String, String> settings = new HashMap<String, String>(6);
     private int width;
@@ -44,8 +46,8 @@ public class SDLConfig {
         try {
             Files.createDirectories(Paths.get(configPath));
         } catch (Exception e) {
-            System.out.println("Problem Creating Config Path " + configPath);
-            System.out.println(e.getMessage());
+            Log.d(TAG, "Problem Creating Config Path " + configPath);
+            Log.d(TAG, e.getMessage());
         }
 
         try // Check Config File
@@ -61,8 +63,8 @@ public class SDLConfig {
                 saveConfig();
             }
         } catch (Exception e) {
-            System.out.println("Problem Opening Config " + configFile);
-            System.out.println(e.getMessage());
+            Log.d(TAG, "Problem Opening Config " + configFile);
+            Log.d(TAG, e.getMessage());
         }
 
         try // Read Records
@@ -103,8 +105,8 @@ public class SDLConfig {
                 height = h;
             }
         } catch (Exception e) {
-            System.out.println("Problem Reading Config: " + configFile);
-            System.out.println(e.getMessage());
+            Log.d(TAG, "Problem Reading Config: " + configFile);
+            Log.d(TAG, e.getMessage());
         }
 
     }
@@ -120,8 +122,8 @@ public class SDLConfig {
             }
             writer.close();
         } catch (Exception e) {
-            System.out.println("Problem Opening Config " + configFile);
-            System.out.println(e.getMessage());
+            Log.d(TAG, "Problem Opening Config " + configFile);
+            Log.d(TAG, e.getMessage());
         }
     }
 }

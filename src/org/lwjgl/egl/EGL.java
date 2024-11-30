@@ -4,6 +4,7 @@
  */
 package org.lwjgl.egl;
 
+import android.util.Log;
 import org.lwjgl.system.*;
 
 import javax.annotation.*;
@@ -36,6 +37,7 @@ import static org.lwjgl.system.MemoryUtil.*;
  * <p>The {@code EGLCapabilities} instance for the client library is created automatically when the EGL native library is loaded.</p>
  */
 public final class EGL {
+    static public final String TAG = EGL.class.getSimpleName();
 
     @Nullable
     private static FunctionProvider functionProvider;
@@ -47,7 +49,7 @@ public final class EGL {
         if (!Configuration.EGL_EXPLICIT_INIT.get(false)) {
             create();
 			
-			System.out.println("[init egl]");
+			Log.d(TAG, "[init egl]");
         }
     }
 

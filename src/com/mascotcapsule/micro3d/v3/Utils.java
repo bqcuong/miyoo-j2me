@@ -16,23 +16,12 @@
 
 package com.mascotcapsule.micro3d.v3;
 
-// import android.content.SharedPreferences;
-// import android.graphics.Bitmap;
-
-// import androidx.preference.PreferenceManager;
-
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import ru.woesss.j2me.micro3d.MathUtil;
 
-// import javax.microedition.shell.MicroActivity;
-// import javax.microedition.util.ContextHolder;
-
-// import ru.playsoftware.j2meloader.BuildConfig;
-// import ru.playsoftware.j2meloader.R;
-
 public class Utils {
-	static public final String TAG = "micro3d";
+	static public final String TAG = Utils.class.getSimpleName();
 
 	static public void getSpriteVertex(float[] vertex, float angle, float halfW, float halfH) {
 		angle *= MathUtil.TO_RADIANS;

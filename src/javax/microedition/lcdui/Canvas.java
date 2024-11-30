@@ -16,6 +16,7 @@
 */
 package javax.microedition.lcdui;
 
+import android.util.Log;
 import org.recompile.mobile.Mobile;
 import org.recompile.mobile.PlatformImage;
 import org.recompile.mobile.PlatformGraphics;
@@ -23,6 +24,7 @@ import org.recompile.mobile.PlatformGraphics;
 
 public abstract class Canvas extends Displayable
 {
+	static public final String TAG = Canvas.class.getSimpleName();
 	public static final int UP = 1;
 	public static final int LEFT = 2;
 	public static final int RIGHT = 5;
@@ -53,7 +55,7 @@ public abstract class Canvas extends Displayable
 		width = Mobile.getPlatform().lcdWidth;
 		height = Mobile.getPlatform().lcdHeight;
 
-		System.out.println("Create Canvas:"+width+", "+height);
+		Log.d(TAG, "Create Canvas:"+width+", "+height);
 
 		platformImage = new PlatformImage(width, height);
 	}

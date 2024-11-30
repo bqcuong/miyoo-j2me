@@ -43,7 +43,7 @@ public abstract class GameCanvas extends Canvas
 		this.suppressKeyEvents = suppressKeyEvents;
 		Mobile.getPlatform().suppressKeyEvents = suppressKeyEvents;
 		
-		//System.out.println("suppressKeyEvents is:"+suppressKeyEvents);
+		//Log.d(TAG, "suppressKeyEvents is:"+suppressKeyEvents);
 
 		width = Mobile.getPlatform().lcdWidth;
 		height = Mobile.getPlatform().lcdHeight;
@@ -58,7 +58,7 @@ public abstract class GameCanvas extends Canvas
 
 	@Override
 	public void paint(Graphics g) {
-		//System.out.println("[GameCanvas this is]");
+		//Log.d(TAG, "[GameCanvas this is]");
 		//g.drawImage(platformImage, 0, 0, Graphics.LEFT | Graphics.TOP);
 	}
 
@@ -81,13 +81,13 @@ public abstract class GameCanvas extends Canvas
 		long threadId = currentThread.getId();
 		
 		// 打印线程ID
-		System.out.println("获取keystate线程的ID是：" + threadId); */
+		Log.d(TAG, "获取keystate线程的ID是：" + threadId); */
 		//当前线程跟更新keystate的不是一个线程
 		//这个函数不能运行太快，快了还没来得及检测就无了
 		// int t = Mobile.getPlatform().keyState;
 		// Mobile.getPlatform().keyState = 0;
 		int t=Mobile.getPlatform().getKeyState();
-		//System.out.println("获取按键状态");
+		//Log.d(TAG, "获取按键状态");
 		return t;
 	}
 	

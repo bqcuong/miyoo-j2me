@@ -124,7 +124,7 @@ public final class Font
 	
 	public int charWidth(char ch) { 
 	
-		//System.out.println("char:"+ch);
+		//Log.d(TAG, "char:"+ch);
 		/* if(ch==(char)0)
 		{
 			return 0;
@@ -185,7 +185,7 @@ public final class Font
 
 	public int stringWidth(String str)
 	{
-		//System.out.println("对话:"+str+" size:"+size);
+		//Log.d(TAG, "对话:"+str+" size:"+size);
 		//return fm.stringWidth(str);
 		if(str==null)
 		{

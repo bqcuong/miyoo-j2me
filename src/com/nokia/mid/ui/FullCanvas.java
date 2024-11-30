@@ -35,18 +35,18 @@ public abstract class FullCanvas extends javax.microedition.lcdui.Canvas
 
 	protected FullCanvas()
 	{
-		//System.out.println("Nokia FullCanvas");
+		//Log.d(TAG, "Nokia FullCanvas");
 	}
 
 /*
 	public void addCommand(Command cmd)
 	{
-		System.out.println("Nokia FullCanvas addCommand");
+		Log.d(TAG, "Nokia FullCanvas addCommand");
 	}
 
 	public void setCommandListener(CommandListener l)
 	{
-		System.out.println("Nokia FullCanvas setCommandListener");
+		Log.d(TAG, "Nokia FullCanvas setCommandListener");
 	}
 
 */

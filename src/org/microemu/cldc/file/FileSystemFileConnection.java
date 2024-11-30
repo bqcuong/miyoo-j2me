@@ -146,7 +146,7 @@ public class FileSystemFileConnection implements FileConnection {
 		}
 		int separator = path.indexOf(DIR_SEP);
 		if (separator == -1) return null;
-	    System.out.println(TAG+": getRoot: unknown root in path: " + path);
+	    Log.d(TAG, "getRoot: unknown root in path: " + path);
 		return path.substring(0, separator + 1);
 	}
 

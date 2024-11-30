@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
+import android.util.Log;
 import org.recompile.mobile.PlatformPlayer;
 
 import javax.microedition.media.protocol.DataSource;
@@ -27,18 +28,19 @@ import javax.microedition.media.protocol.SourceStream;
 
 public final class Manager
 {
+	static public final String TAG = Manager.class.getSimpleName();
 
 	public static final String TONE_DEVICE_LOCATOR = "device://tone";
 
 	public static Player createPlayer(InputStream stream, String type) throws IOException, MediaException
 	{
-		System.out.println("Create PlatformPlayer from stream: " + type);
+		Log.d(TAG, "Create PlatformPlayer from stream: " + type);
 		return new PlatformPlayer(stream, type);
 	}
 
 	public static Player createPlayer(String locator) throws MediaException
 	{
-		System.out.println("Create Player: " + locator);
+		Log.d(TAG, "Create Player: " + locator);
 		return new PlatformPlayer(locator);
 	}
 	
@@ -48,7 +50,7 @@ public final class Manager
 		}
 
 		String type = source.getContentType();
-		System.out.println("Create PlatformPlayer from datasource: " + type);
+		Log.d(TAG, "Create PlatformPlayer from datasource: " + type);
 		String[] supportedTypes = getSupportedContentTypes(null);
 		
 		for (int i = 0; i < supportedTypes.length; i++) {
@@ -76,13 +78,13 @@ public final class Manager
 	
 	public static String[] getSupportedProtocols(String content_type)
 	{
-		System.out.println("Get Supported Media Protocols");
+		Log.d(TAG, "Get Supported Media Protocols");
 		return new String[]{"device", "file", "http"};
 	}
 	
 	public static void playTone(int note, int duration, int volume)
 	{
-		System.out.println("Play Tone");
+		Log.d(TAG, "Play Tone");
 	}
 
 }

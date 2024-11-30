@@ -23,11 +23,14 @@ import java.util.Vector;
 import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.Graphics;
 
+import android.util.Log;
 import org.recompile.mobile.Mobile;
 import org.recompile.mobile.PlatformGraphics;
 
 public class LayerManager extends javax.microedition.lcdui.game.LayerManager
 {
+	static public final String TAG = LayerManager.class.getSimpleName();
+	
 	private Vector<Layer> layers;
 
 	public LayerManager() 
@@ -65,7 +68,7 @@ public class LayerManager extends javax.microedition.lcdui.game.LayerManager
 		}
 		catch(Exception e)
 		{
-			System.out.println("Can't Append Layer " + e.getMessage());
+			Log.d(TAG, "Can't Append Layer " + e.getMessage());
 		}
 	}
 

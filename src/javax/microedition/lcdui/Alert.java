@@ -18,6 +18,7 @@ package javax.microedition.lcdui;
 
 import java.util.ArrayList;
 
+import android.util.Log;
 import org.recompile.mobile.Mobile;
 
 
@@ -44,15 +45,15 @@ public class Alert extends Screen
 
 	public Alert(String title)
 	{
-		System.out.println("Alert: " + title);
+		Log.d(TAG, "Alert: " + title);
 		setTitle(title);
 		Thread.dumpStack();
 	}
 
 	public Alert(String title, String alertText, Image alertImage, AlertType alertType)
 	{
-		System.out.println("Alert: " + title);
-		System.out.println("Alert: " + alertText);
+		Log.d(TAG, "Alert: " + title);
+		Log.d(TAG, "Alert: " + alertText);
 
 		setTitle(title);
 		setString(alertText);
@@ -80,7 +81,7 @@ public class Alert extends Screen
 
 	public void setString(String text)
 	{
-		System.out.println(text);
+		Log.d(TAG, text);
 		message = text;
 	}
 

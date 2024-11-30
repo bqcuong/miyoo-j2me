@@ -17,11 +17,15 @@
 
 package javax.microedition.m3g;
 
+import android.util.Log;
+
 import java.util.Vector;
 
 /**
  */
 public abstract class Object3D {
+	static public final String TAG = Object3D.class.getSimpleName();
+
 	//------------------------------------------------------------------
 	// Instance data
 	//------------------------------------------------------------------
@@ -59,7 +63,7 @@ public abstract class Object3D {
 				linkAnimTrack((AnimationTrack) getInstance(_getAnimationTrack(handle, n)));
 			}
 		} else {
-			System.out.println("Warning: Object3D constructor called with zero handle");
+			Log.d(TAG, "Warning: Object3D constructor called with zero handle");
 		}
 	}
 

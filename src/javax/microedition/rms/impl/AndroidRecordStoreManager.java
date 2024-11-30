@@ -50,7 +50,7 @@ import javax.microedition.rms.RecordStoreNotFoundException;
 import org.recompile.mobile.Mobile;
 
 public class AndroidRecordStoreManager implements RecordStoreManager {
-	private static final String TAG = "RecordStore";
+	private static final String TAG = AndroidRecordStoreManager.class.getSimpleName();
 
 	private final static String RECORD_STORE_HEADER_SUFFIX = ".rsh";
 

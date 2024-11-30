@@ -16,6 +16,7 @@
 */
 package org.recompile.freej2me;
 
+import android.util.Log;
 import org.recompile.mobile.Audio;
 import org.recompile.mobile.Mobile;
 import org.recompile.mobile.MobilePlatform;
@@ -28,6 +29,8 @@ import java.util.TimerTask;
 
 
 public class Anbu {
+    static public final String TAG = Anbu.class.getSimpleName();
+    
     private static java.awt.Font globalFont = null;
     private final SDL sdl;
 
@@ -131,7 +134,7 @@ public class Anbu {
         if (js.length > 0) {
             if (js[js.length - 1].endsWith(".jar")) {
                 appname = js[js.length - 1].substring(0, js[js.length - 1].length() - 4);
-                System.out.println("jar file name: " + appname);
+                Log.d(TAG, "jar file name: " + appname);
             }
         }
 
@@ -208,8 +211,8 @@ public class Anbu {
 
                 }
                 catch (Exception e) {
-                    System.out.println("Failed to write sdl_interface");
-                    System.out.println(e.getMessage());
+                    Log.d(TAG, "Failed to write sdl_interface");
+                    Log.d(TAG, e.getMessage());
 
                     new Thread(new Runnable() {
                         @Override
@@ -237,7 +240,7 @@ public class Anbu {
             Mobile.getPlatform().runJar();
         }
         else {
-            System.out.println("Couldn't load jar...");
+            Log.d(TAG, "Couldn't load jar...");
             System.exit(0);
         }
     }
@@ -255,7 +258,7 @@ public class Anbu {
             java.awt.Font tmpFont = java.awt.Font.createFont(java.awt.Font.TRUETYPE_FONT, new File("./font.ttf"));
             globalFont = tmpFont.deriveFont(java.awt.Font.PLAIN, 12f);
         } catch (Exception e) {
-            System.out.println("Failed to load font: " + e.getMessage());
+            Log.d(TAG, "Failed to load font: " + e.getMessage());
             globalFont = new java.awt.Font("MiSans Normal", java.awt.Font.PLAIN, 12);
         }
         return globalFont;
@@ -513,8 +516,8 @@ public class Anbu {
                 keytimer.schedule(keytask, 0, 5);
 
             } catch (Exception e) {
-                System.out.println("Failed to start sdl_interface");
-                System.out.println(e.getMessage());
+                Log.d(TAG, "Failed to start sdl_interface");
+                Log.d(TAG, e.getMessage());
                 System.exit(0);
             }
         }
@@ -584,10 +587,10 @@ public class Anbu {
                             } else {
                                 //Key pressed or repeated
                                 if (pressedKeys[mobikeyN] == false) {
-                                    //System.out.println("keyPressed:  " + Integer.toString(mobikey));
+                                    //Log.d(TAG, "keyPressed:  " + Integer.toString(mobikey));
                                     Mobile.getPlatform().keyPressed(mobikey);
                                 } else {
-                                    //System.out.println("keyRepeated:  " + Integer.toString(mobikey));
+                                    //Log.d(TAG, "keyRepeated:  " + Integer.toString(mobikey));
                                     Mobile.getPlatform().keyRepeated(mobikey);
                                 }
                                 pressedKeys[mobikeyN] = true;

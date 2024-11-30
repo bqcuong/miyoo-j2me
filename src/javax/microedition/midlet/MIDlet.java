@@ -24,10 +24,12 @@ import javax.microedition.lcdui.game.*;
 import javax.microedition.pki.*;
 import javax.microedition.rms.*;
 
+import android.util.Log;
 import org.recompile.mobile.Audio;
 
 public abstract class MIDlet
 {
+	static public final String TAG = MIDlet.class.getSimpleName();
 
 	public static HashMap<String, String> properties;
 
@@ -35,14 +37,14 @@ public abstract class MIDlet
 
 	protected MIDlet()
 	{
-		System.out.println("Create MIDlet");
+		Log.d(TAG, "Create MIDlet");
 	}
 
 
 	public final int checkPermission(String permission)
 	{
 		// 0 - denied; 1 - allowed; -1 unknown
-		System.out.println("checkPermission: "+permission);
+		Log.d(TAG, "checkPermission: "+permission);
 		return -1;
 	}
 
@@ -62,7 +64,7 @@ public abstract class MIDlet
 	{ 
 		Audio.destroy();
 
-		System.out.println("MIDlet sent Destroyed Notification");
+		Log.d(TAG, "MIDlet sent Destroyed Notification");
 		System.exit(0);
 	}
 

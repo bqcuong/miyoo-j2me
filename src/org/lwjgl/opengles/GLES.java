@@ -4,6 +4,7 @@
  */
 package org.lwjgl.opengles;
 
+import android.util.Log;
 import org.lwjgl.*;
 import org.lwjgl.system.*;
 
@@ -49,6 +50,8 @@ import static org.lwjgl.system.MemoryUtil.*;
  */
 public final class GLES {
 
+    static public final String TAG = GLES.class.getSimpleName();
+
     @Nullable
     private static final APIVersion MAX_VERSION;
 
@@ -67,7 +70,7 @@ public final class GLES {
         if (!Configuration.OPENGLES_EXPLICIT_INIT.get(false)) {
             create();
 			
-			System.out.println("[init opengles]");
+			Log.d(TAG, "[init opengles]");
         }
     }
 

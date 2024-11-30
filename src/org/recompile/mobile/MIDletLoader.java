@@ -17,6 +17,8 @@
 package org.recompile.mobile;
 
 
+import android.util.Log;
+
 import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 import java.io.*;
@@ -31,6 +33,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MIDletLoader extends URLClassLoader {
+    static public final String TAG = MIDletLoader.class.getSimpleName();
+    
     public String name;
     public String icon;
     public String suitename;
@@ -53,7 +57,7 @@ public class MIDletLoader extends URLClassLoader {
             //System.setProperty("os.name", "Nokia7650");
             System.setProperty("supports.mixing", "false");
         } catch (Exception e) {
-            System.out.println("Can't add CLDC System Properties");
+            Log.d(TAG, "Can't add CLDC System Properties");
         }
 
         try {
@@ -67,7 +71,7 @@ public class MIDletLoader extends URLClassLoader {
             //properties.put("os.name", "Nokia7650");
             properties.put("supports.mixing", "false");
         } catch (Exception e) {
-            System.out.println("Can't Read Manifest!");
+            Log.d(TAG, "Can't Read Manifest!");
             return;
         }
 
@@ -86,7 +90,7 @@ public class MIDletLoader extends URLClassLoader {
             System.setProperty("microedition.encoding", "UTF-8");
             System.setProperty("supports.mixing", "false");
         } catch (Exception e) {
-            System.out.println("Can't add CLDC System Properties");
+            Log.d(TAG, "Can't add CLDC System Properties");
         }
 
         try {
@@ -100,7 +104,7 @@ public class MIDletLoader extends URLClassLoader {
             //properties.put("os.name", "Nokia7650");
             properties.put("supports.mixing", "false");
         } catch (Exception e) {
-            System.out.println("Can't Read Manifest!");
+            Log.d(TAG, "Can't Read Manifest!");
             return;
         }
 
@@ -127,7 +131,7 @@ public class MIDletLoader extends URLClassLoader {
             URI uri = URI.create(url);
             zipfs = FileSystems.newFileSystem(uri, env);
         } catch (Exception e) {
-            System.out.println("Error creating zip file: " + e.getMessage());
+            Log.d(TAG, "Error creating zip file: " + e.getMessage());
         }
 
         try {
@@ -138,7 +142,7 @@ public class MIDletLoader extends URLClassLoader {
             System.setProperty("microedition.encoding", "UTF-8");
             System.setProperty("supports.mixing", "false");
         } catch (Exception e) {
-            System.out.println("Can't add CLDC System Properties");
+            Log.d(TAG, "Can't add CLDC System Properties");
         }
 
         try {
@@ -151,7 +155,7 @@ public class MIDletLoader extends URLClassLoader {
             properties.put("microedition.encoding", "UTF-8");
             properties.put("supports.mixing", "false");
         } catch (Exception e) {
-            System.out.println("Can't Read Manifest!");
+            Log.d(TAG, "Can't Read Manifest!");
             return;
         }
 
@@ -170,8 +174,8 @@ public class MIDletLoader extends URLClassLoader {
             MIDlet.initAppProperties(properties);
             mainInst = (MIDlet) constructor.newInstance();
         } catch (Exception e) {
-            System.out.println("Problem Constructing " + name + " class: " + className);
-            System.out.println("Reason: " + e.getMessage());
+            Log.d(TAG, "Problem Constructing " + name + " class: " + className);
+            Log.d(TAG, "Reason: " + e.getMessage());
             e.printStackTrace();
             System.exit(0);
             return;
@@ -194,7 +198,7 @@ public class MIDletLoader extends URLClassLoader {
                 destroy.setAccessible(true);
 
             } catch (Exception f) {
-                System.out.println("Can't Find startApp Method");
+                Log.d(TAG, "Can't Find startApp Method");
                 f.printStackTrace();
                 System.exit(0);
                 return;
@@ -202,7 +206,7 @@ public class MIDletLoader extends URLClassLoader {
         }
 
         try {
-            System.out.println("MIDlet start");
+            Log.d(TAG, "MIDlet start");
             start.invoke(mainInst);
 
         } catch (Exception e) {
@@ -281,7 +285,7 @@ public class MIDletLoader extends URLClassLoader {
             // for RecordStore, remove illegal chars from name
             suitename = suitename.replace(":", "");
         } catch (Exception e) {
-            System.out.println("Can't Read Jar Manifest!");
+            Log.d(TAG, "Can't Read Jar Manifest!");
             e.printStackTrace();
         }
     }
@@ -322,7 +326,7 @@ public class MIDletLoader extends URLClassLoader {
             }
             return new ByteArrayInputStream(buffer.toByteArray());
         } catch (Exception e) {
-            System.out.println(resource + " Not Found");
+            Log.d(TAG, resource + " Not Found");
             return super.getResourceAsStream(resource);
         }
     }
@@ -370,7 +374,7 @@ public class MIDletLoader extends URLClassLoader {
             }
             return buffer.toByteArray();
         } catch (Exception e) {
-            System.out.println(resource + " Not Found");
+            Log.d(TAG, resource + " Not Found");
             return new byte[0];
         }
     }
@@ -401,7 +405,7 @@ public class MIDletLoader extends URLClassLoader {
             code = MyProducer.instrument(stream);
             return defineClass(name, code, 0, code.length);
         } catch (Exception e) {
-            System.out.println("Error Adapting Class " + name);
+            Log.d(TAG, "Error Adapting Class " + name);
             return null;
         }
 

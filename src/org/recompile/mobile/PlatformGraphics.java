@@ -16,6 +16,7 @@
 */
 package org.recompile.mobile;
 
+import android.util.Log;
 import com.nokia.mid.ui.DirectGraphics;
 
 import javax.microedition.lcdui.Font;
@@ -25,6 +26,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class PlatformGraphics extends javax.microedition.lcdui.Graphics implements DirectGraphics {
+    static public final String TAG = PlatformGraphics.class.getSimpleName();
+    
     public PlatformGraphics platformGraphics;
     public PlatformImage platformImage;
     protected BufferedImage canvas;
@@ -110,7 +113,7 @@ public class PlatformGraphics extends javax.microedition.lcdui.Graphics implemen
 
             gc.drawImage(image.platformImage.getCanvas(), x, y, null);
         } catch (Exception e) {
-            System.out.println("drawImage A:" + e.getMessage());
+            Log.d(TAG, "drawImage A:" + e.getMessage());
         }
     }
 
@@ -118,7 +121,7 @@ public class PlatformGraphics extends javax.microedition.lcdui.Graphics implemen
         try {
             gc.drawImage(image.platformImage.getCanvas(), x, y, null);
         } catch (Exception e) {
-            System.out.println("drawImage B:" + e.getMessage());
+            Log.d(TAG, "drawImage B:" + e.getMessage());
         }
     }
 
@@ -162,7 +165,7 @@ public class PlatformGraphics extends javax.microedition.lcdui.Graphics implemen
                 }
             }
         } catch (Exception e) {
-            System.out.println("drawImage C:" + e.getMessage());
+            Log.d(TAG, "drawImage C:" + e.getMessage());
         }
     }
 
@@ -172,7 +175,7 @@ public class PlatformGraphics extends javax.microedition.lcdui.Graphics implemen
             BufferedImage sub = image.platformImage.getCanvas().getSubimage(x, y, width, height);
             gc.drawImage(sub, x, y, null);
         } catch (Exception e) {
-            //System.out.println("flushGraphics A:"+e.getMessage());
+            //Log.d(TAG, "flushGraphics A:"+e.getMessage());
         }
     }
 
@@ -201,7 +204,7 @@ public class PlatformGraphics extends javax.microedition.lcdui.Graphics implemen
                 gc.drawImage(sub.getCanvas(), x, y, null);
             }
         } catch (Exception e) {
-            //System.out.println("drawRegion A (x:"+x+" y:"+y+" w:"+subw+" h:"+subh+"):"+e.getMessage());
+            //Log.d(TAG, "drawRegion A (x:"+x+" y:"+y+" w:"+subw+" h:"+subh+"):"+e.getMessage());
         }
     }
 
@@ -426,7 +429,7 @@ public class PlatformGraphics extends javax.microedition.lcdui.Graphics implemen
                 break;
 
             default:
-                System.out.println("drawPixels A : Format " + format + " Not Implemented");
+                Log.d(TAG, "drawPixels A : Format " + format + " Not Implemented");
         }
     }
 
@@ -489,12 +492,12 @@ public class PlatformGraphics extends javax.microedition.lcdui.Graphics implemen
     }
 
     public void fillTriangle(int x1, int y1, int x2, int y2, int x3, int y3) {
-        //System.out.println("fillTriangle"); // Found In Use
+        //Log.d(TAG, "fillTriangle"); // Found In Use
         gc.fillPolygon(new int[]{x1, x2, x3}, new int[]{y1, y2, y3}, 3);
     }
 
     public void fillTriangle(int x1, int y1, int x2, int y2, int x3, int y3, int argbColor) {
-        //System.out.println("fillTriangle"); // Found In Use
+        //Log.d(TAG, "fillTriangle"); // Found In Use
         int temp = color;
         setAlphaRGB(argbColor);
         gc.fillPolygon(new int[]{x1, x2, x3}, new int[]{y1, y2, y3}, 3);
@@ -502,16 +505,16 @@ public class PlatformGraphics extends javax.microedition.lcdui.Graphics implemen
     }
 
     public void getPixels(byte[] pixels, byte[] transparencyMask, int offset, int scanlength, int x, int y, int width, int height, int format) {
-        System.out.println("getPixels A");
+        Log.d(TAG, "getPixels A");
     }
 
     public void getPixels(int[] pixels, int offset, int scanlength, int x, int y, int width, int height, int format) {
-        //System.out.println("getPixels B");
+        //Log.d(TAG, "getPixels B");
         canvas.getRGB(x, y, width, height, pixels, offset, scanlength);
     }
 
     public void getPixels(short[] pixels, int offset, int scanlength, int x, int y, int width, int height, int format) {
-        //System.out.println("getPixels C"); // Found In Use
+        //Log.d(TAG, "getPixels C"); // Found In Use
         int i = offset;
         for (int row = 0; row < height; row++) {
             for (int col = 0; col < width; col++) {
@@ -638,7 +641,7 @@ public class PlatformGraphics extends javax.microedition.lcdui.Graphics implemen
             case 0: /* No Manipulation */
                 break;
             default:
-                System.out.println("manipulateImage " + manipulation + " not defined");
+                Log.d(TAG, "manipulateImage " + manipulation + " not defined");
         }
         return image;
     }

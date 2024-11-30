@@ -4,6 +4,7 @@
  */
 package org.lwjgl.demo.egl;
 
+import android.util.Log;
 import org.lwjgl.egl.*;
 
 import org.lwjgl.opengles.*;
@@ -19,6 +20,7 @@ import static org.lwjgl.system.MemoryStack.*;
 import static org.lwjgl.system.MemoryUtil.*;
 
 public class EGLDemo {
+    static public final String TAG = EGLDemo.class.getSimpleName();
 
     public EGLDemo() {
     }
@@ -47,11 +49,11 @@ public class EGLDemo {
         }
 
         try {
-            System.out.println("EGL Capabilities:");
+            Log.d(TAG, "EGL Capabilities:");
             for (Field f : EGLCapabilities.class.getFields()) {
                 if (f.getType() == boolean.class) {
                     if (f.get(egl).equals(Boolean.TRUE)) {
-                        System.out.println("\t" + f.getName());
+                        Log.d(TAG, "\t" + f.getName());
                     }
                 }
             }
@@ -63,11 +65,11 @@ public class EGLDemo {
         GLESCapabilities gles = GLES.createCapabilities();
 
         try {
-            System.out.println("OpenGL ES Capabilities:");
+            Log.d(TAG, "OpenGL ES Capabilities:");
             for (Field f : GLESCapabilities.class.getFields()) {
                 if (f.getType() == boolean.class) {
                     if (f.get(gles).equals(Boolean.TRUE)) {
-                        System.out.println("\t" + f.getName());
+                        Log.d(TAG, "\t" + f.getName());
                     }
                 }
             }
@@ -75,11 +77,11 @@ public class EGLDemo {
             e.printStackTrace();
         }
 
-        System.out.println("GL_VENDOR: " + glGetString(GL_VENDOR));
-        System.out.println("GL_VERSION: " + glGetString(GL_VERSION));
-        System.out.println("GL_RENDERER: " + glGetString(GL_RENDERER));
+        Log.d(TAG, "GL_VENDOR: " + glGetString(GL_VENDOR));
+        Log.d(TAG, "GL_VERSION: " + glGetString(GL_VERSION));
+        Log.d(TAG, "GL_RENDERER: " + glGetString(GL_RENDERER));
 		
-		System.out.println("GL_error: " +glGetError());
+		Log.d(TAG, "GL_error: " +glGetError());
 
 
         glClearColor(0.0f, 0.5f, 1.0f, 0.0f);

@@ -62,21 +62,18 @@ public class ConnectorImpl extends ConnectorAdapter {
 				} else {
 					throw new ClassNotFoundException();
 				}
-			} catch (ClassNotFoundException e) {
+			}
+			catch (ClassNotFoundException e) {
 				Log.e(TAG, "connection [" + protocol + "] class not found", e);
-				System.out.println("connection [" + protocol + "] class not found ");
-				e.printStackTrace();
 				throw new ConnectionNotFoundException("connection [" + protocol + "] class not found");
 			}
-		} catch (InstantiationException e) {
+		}
+		catch (InstantiationException e) {
 			Log.e(TAG, "Unable to create" + className, e);
-			System.out.println("Unable to create" + className+" ");
-			e.printStackTrace();
 			throw new ConnectionNotFoundException();
-		} catch (IllegalAccessException e) {
+		}
+		catch (IllegalAccessException e) {
 			Log.e(TAG, "Unable to create" + className, e);
-			System.out.println("Unable to create" + className+" ");
-			e.printStackTrace();
 			throw new ConnectionNotFoundException();
 		}
 	}
