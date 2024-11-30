@@ -34,7 +34,7 @@ public class PlatformPlayer implements Player {
 
     private String contentType = "";
 
-    private audioplayer player;
+    private AudioPlayer player;
 
     private int state = Player.UNREALIZED;
 
@@ -48,28 +48,28 @@ public class PlatformPlayer implements Player {
         contentType = type;
 
         if (!Mobile.sound) {
-            player = new audioplayer();
+            player = new AudioPlayer();
         }
         else {
             if (type.equalsIgnoreCase("audio/mid") || type.equalsIgnoreCase("audio/midi") || type.equalsIgnoreCase("sp-midi")
                 || type.equalsIgnoreCase("audio/spmidi")) {
-                player = new midiPlayer(stream, ".mid");
+                player = new SDLMixerPlayer(stream, ".mid");
             }
             else if (type.equalsIgnoreCase("audio/mpeg") || type.equalsIgnoreCase("audio/x-wav") || type.equalsIgnoreCase("audio/wav")) {
-                player = new midiPlayer(stream, ".wav");
+                player = new SDLMixerPlayer(stream, ".wav");
             }
             else {
                 Log.d(TAG, "No Player For: " + contentType);
-                player = new audioplayer();
+                player = new AudioPlayer();
             }
         }
-        controls[0] = new volumeControl();
-        controls[1] = new tempoControl();
-        controls[2] = new midiControl();
+        controls[0] = new VolumeControl();
+        controls[1] = new TempoControl();
+        controls[2] = new MIDIControl();
     }
 
     public PlatformPlayer(String locator) {
-        player = new audioplayer();
+        player = new AudioPlayer();
         listeners = new Vector<>();
         controls = new Control[3];
         Log.d(TAG, "Player locator: " + locator);
@@ -90,7 +90,6 @@ public class PlatformPlayer implements Player {
         return sb.toString();
 
     }
-
 
     public void close() {
         try {
@@ -199,7 +198,7 @@ public class PlatformPlayer implements Player {
         notifyListeners(PlayerListener.END_OF_MEDIA, 0);
     }
 
-    private class audioplayer {
+    private static class AudioPlayer {
         public void start() {
         }
 
@@ -225,12 +224,12 @@ public class PlatformPlayer implements Player {
         }
     }
 
-    private class midiPlayer extends audioplayer {
+    private class SDLMixerPlayer extends AudioPlayer {
         private int loops = 1;
         private boolean isrun = false;
         private String bgmFileName = "";
 
-        public midiPlayer(InputStream stream, String type) {
+        public SDLMixerPlayer(InputStream stream, String type) {
             try {
                 String rmsPath = "./rms/" + Mobile.getPlatform().loader.suitename;
                 try {
@@ -270,7 +269,7 @@ public class PlatformPlayer implements Player {
         }
 
         public void start() {
-            if (bgmFileName.equals("")) {
+            if (bgmFileName.isEmpty()) {
                 return;
             }
 
@@ -322,7 +321,6 @@ public class PlatformPlayer implements Player {
             }
 
             isrun = false;
-
             state = Player.PREFETCHED;
         }
 
@@ -346,46 +344,7 @@ public class PlatformPlayer implements Player {
         }
     }
 
-    private class wavPlayer extends audioplayer {
-
-        private int loops = 0;
-        private boolean isrun = false;
-
-        public wavPlayer(InputStream stream) {
-            state = Player.PREFETCHED;
-        }
-
-        public void start() {
-            if (isRunning()) {
-                return;
-            }
-            state = Player.STARTED;
-            isrun = true;
-        }
-
-        public void stop() {
-            state = Player.PREFETCHED;
-            isrun = false;
-        }
-
-        public void setLoopCount(int count) {
-            loops = count;
-        }
-
-        public long setMediaTime(long now) {
-            return now;
-        }
-
-        public long getMediaTime() {
-            return 0;
-        }
-
-        public boolean isRunning() {
-            return isrun;
-        }
-    }
-
-    private class midiControl implements javax.microedition.media.control.MIDIControl {
+    private static class MIDIControl implements javax.microedition.media.control.MIDIControl {
         public int[] getBankList(boolean custom) {
             return new int[]{};
         }
@@ -428,7 +387,7 @@ public class PlatformPlayer implements Player {
         }
     }
 
-    private class volumeControl implements javax.microedition.media.control.VolumeControl {
+    private static class VolumeControl implements javax.microedition.media.control.VolumeControl {
         private int level = 100;
         private boolean muted = false;
 
@@ -450,7 +409,7 @@ public class PlatformPlayer implements Player {
         }
     }
 
-    private class tempoControl implements javax.microedition.media.control.TempoControl {
+    private static class TempoControl implements javax.microedition.media.control.TempoControl {
         int tempo = 5000;
         int rate = 5000;
 

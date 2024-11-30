@@ -280,6 +280,3 @@ JNIEXPORT void JNICALL Java_org_recompile_mobile_PlatformPlayer__1start
 	changeBGM(str,loop);
 	aEnv->ReleaseStringUTFChars(aBgm, str);
 }
-
-
-
