@@ -40,12 +40,13 @@ public class PlatformPlayer implements Player {
     private Control[] controls;
 
     public PlatformPlayer(InputStream stream, String type) {
-        listeners = new Vector<PlayerListener>();
+        listeners = new Vector<>();
         controls = new Control[3];
-
         contentType = type;
 
-        if (Mobile.sound == false) {
+        System.out.println("media type: " + type);
+
+        if (!Mobile.sound) {
             player = new audioplayer();
         }
         else {
@@ -64,13 +65,11 @@ public class PlatformPlayer implements Player {
         controls[0] = new volumeControl();
         controls[1] = new tempoControl();
         controls[2] = new midiControl();
-
-        System.out.println("media type: " + type);
     }
 
     public PlatformPlayer(String locator) {
         player = new audioplayer();
-        listeners = new Vector<PlayerListener>();
+        listeners = new Vector<>();
         controls = new Control[3];
         System.out.println("Player locator: " + locator);
     }
@@ -243,7 +242,8 @@ public class PlatformPlayer implements Player {
                 String rmsPath = "./rms/" + Mobile.getPlatform().loader.suitename;
                 try {
                     Files.createDirectories(Paths.get(rmsPath));
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
                     System.out.println("Error create game rms folder:" + e.getMessage());
                 }
                 byte[] buffer = new byte[1024];
@@ -302,7 +302,8 @@ public class PlatformPlayer implements Player {
                 }
 
                 Audio.start(bgmFileName, loops);
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 System.out.println("Error starting sound: " + e.getMessage());
             }
             isrun = true;

@@ -30,25 +30,25 @@ public final class Manager
 
 	public static final String TONE_DEVICE_LOCATOR = "device://tone";
 
-
 	public static Player createPlayer(InputStream stream, String type) throws IOException, MediaException
 	{
-		//System.out.println("Create Player Stream "+type);
+		System.out.println("Create PlatformPlayer from stream: " + type);
 		return new PlatformPlayer(stream, type);
 	}
 
 	public static Player createPlayer(String locator) throws MediaException
 	{
-		System.out.println("Create Player "+locator);
+		System.out.println("Create Player: " + locator);
 		return new PlatformPlayer(locator);
 	}
 	
 	public static Player createPlayer(DataSource source) throws IOException, MediaException {
 		if (source == null) {
-			System.out.println("null DataSource");
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Null datasource for creating PlatformPlayer");
 		}
+
 		String type = source.getContentType();
+		System.out.println("Create PlatformPlayer from datasource: " + type);
 		String[] supportedTypes = getSupportedContentTypes(null);
 		
 		for (int i = 0; i < supportedTypes.length; i++) {
@@ -63,17 +63,14 @@ public final class Manager
 				InputStream stream = new InternalSourceStream(sourceStream);
 				return new PlatformPlayer(stream, type);
 			}
-			
 		}
 		
 		throw new MediaException();
-		
 	}
 	
 	public static String[] getSupportedContentTypes(String protocol)
 	{
-		//System.out.println("Get Supported Media Content Types");
-		return new String[]{"audio/midi", "audio/x-wav", 
+		return new String[]{"audio/midi", "audio/x-wav", "sp-midi", "audio/spmidi",
 		"audio/amr", "audio/mpeg"};
 	}
 	
