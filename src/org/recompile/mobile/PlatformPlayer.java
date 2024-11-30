@@ -48,7 +48,7 @@ public class PlatformPlayer implements Player {
         contentType = type;
 
         if (!Mobile.sound) {
-            player = new AudioPlayer();
+            player = new FakeAudioPlayer();
         }
         else {
             if (type.equalsIgnoreCase("audio/mid") || type.equalsIgnoreCase("audio/midi") || type.equalsIgnoreCase("sp-midi")
@@ -60,7 +60,7 @@ public class PlatformPlayer implements Player {
             }
             else {
                 Log.d(TAG, "No Player For: " + contentType);
-                player = new AudioPlayer();
+                player = new FakeAudioPlayer();
             }
         }
         controls[0] = new VolumeControl();
@@ -69,7 +69,7 @@ public class PlatformPlayer implements Player {
     }
 
     public PlatformPlayer(String locator) {
-        player = new AudioPlayer();
+        player = new FakeAudioPlayer();
         listeners = new Vector<>();
         controls = new Control[3];
         Log.d(TAG, "Player locator: " + locator);
@@ -91,38 +91,115 @@ public class PlatformPlayer implements Player {
 
     }
 
-    public void close() {
-        try {
-            player.stop();
-            state = Player.CLOSED;
-            notifyListeners(PlayerListener.CLOSED, null);
-        } catch (Exception e) {
-        }
-        state = Player.CLOSED;
-    }
-
+    @Override
     public int getState() {
+        Log.d(TAG, "Player getState: " + state);
         return state;
     }
 
+    @Override
+    public void realize() {
+        if (this.state == Player.CLOSED) {
+            throw new IllegalStateException("Cannot realize player, as it is in the CLOSED state");
+        }
+
+        if (this.state == Player.UNREALIZED) {
+            state = Player.REALIZED;
+        }
+    }
+
+    @Override
+    public void prefetch() {
+        if (this.state == Player.CLOSED) {
+            throw new IllegalStateException("Cannot prefetch player, as it is in the CLOSED state");
+        }
+
+        if (this.state == Player.UNREALIZED) {
+            realize();
+        }
+
+        if (this.state == Player.REALIZED) {
+            state = Player.PREFETCHED;
+        }
+    }
+
+    @Override
     public void start() {
+        if (this.state == Player.CLOSED) {
+            throw new IllegalStateException("Cannot start player, as it is in the CLOSED state");
+        }
+
         try {
-            player.start();
-        } catch (Exception e) {
+            if (this.state == Player.REALIZED || this.state == Player.UNREALIZED) {
+                prefetch();
+            }
+            if (this.state == Player.PREFETCHED) {
+                player.start();
+            }
+        }
+        catch (Exception e) {
+            Log.e(TAG, "Cannot start player: ", e);
         }
     }
 
+    @Override
     public void stop() {
+        if (this.state == Player.CLOSED) {
+            throw new IllegalStateException("Cannot call stop() on a CLOSED player.");
+        }
+
         try {
-            player.stop();
-        } catch (Exception e) {
+            if (this.state == Player.STARTED) {
+                player.stop();
+            }
+        }
+        catch (Exception e) {
+            Log.e(TAG, "Cannot stop player: ", e);
         }
     }
 
+    @Override
+    public void close() {
+        if (this.state == Player.CLOSED) {
+            return;
+        }
+
+        try {
+            if (player.isRunning()) {
+                stop();
+            }
+            player.stop();
+            player = null;
+            state = Player.CLOSED;
+            notifyListeners(PlayerListener.CLOSED, null);
+        }
+        catch (Exception e) {
+            Log.e(TAG, "Cannot close player: ", e);
+        }
+    }
+
+    @Override
+    public void deallocate() {
+        if (this.state == Player.CLOSED) { throw new IllegalStateException("Cannot deallocate player, it is already CLOSED."); }
+
+        if (player.isRunning()) {
+            stop();
+        }
+
+        player.deallocate();
+        notifyListeners(PlayerListener.END_OF_MEDIA, 0);
+
+        if (state > Player.UNREALIZED) {
+            state = Player.UNREALIZED;
+        }
+    }
+
+    @Override
     public void addPlayerListener(PlayerListener playerListener) {
         listeners.add(playerListener);
     }
 
+    @Override
     public void removePlayerListener(PlayerListener playerListener) {
         listeners.remove(playerListener);
     }
@@ -133,41 +210,32 @@ public class PlatformPlayer implements Player {
         }
     }
 
-    public void deallocate() {
-        stop();
-        player.deallocate();
-        notifyListeners(PlayerListener.END_OF_MEDIA, 0);
-        state = Player.UNREALIZED;
-    }
-
+    @Override
     public String getContentType() {
         return contentType;
     }
 
+    @Override
     public long getDuration() {
         return Player.TIME_UNKNOWN;
     }
 
+    @Override
     public long getMediaTime() {
         return player.getMediaTime();
     }
 
-    public void prefetch() {
-        state = Player.PREFETCHED;
-    }
-
-    public void realize() {
-        state = Player.REALIZED;
-    }
-
+    @Override
     public void setLoopCount(int count) {
         player.setLoopCount(count);
     }
 
+    @Override
     public long setMediaTime(long now) {
         return player.setMediaTime(now);
     }
 
+    @Override
     public Control getControl(String controlType) {
         if (controlType.equals("VolumeControl")) {
             return controls[0];
@@ -190,44 +258,66 @@ public class PlatformPlayer implements Player {
         return null;
     }
 
+    @Override
     public Control[] getControls() {
         return controls;
     }
 
+    // Will be invoked by libaudio
     public void musicFinish() {
+        Log.d(TAG, "musicFinish() is called!");
+        state = Player.PREFETCHED;
         notifyListeners(PlayerListener.END_OF_MEDIA, 0);
     }
 
-    private static class AudioPlayer {
-        public void start() {
-        }
+    private static abstract class AudioPlayer {
+        protected long mediaTime = 0;
+        protected int loops = 1;
+        protected boolean running = false;
 
-        public void stop() {
-        }
+        public abstract void start();
+
+        public abstract void stop();
 
         public void setLoopCount(int count) {
+            loops = count;
         }
 
         public long setMediaTime(long now) {
-            return now;
+            mediaTime = now;
+            return mediaTime;
         }
 
         public long getMediaTime() {
-            return 0;
+            return mediaTime;
         }
 
         public boolean isRunning() {
-            return false;
+            return running;
         }
 
+        public abstract void deallocate();
+    }
+
+    private static class FakeAudioPlayer extends AudioPlayer {
+        @Override
+        public void start() {
+
+        }
+
+        @Override
+        public void stop() {
+
+        }
+
+        @Override
         public void deallocate() {
+
         }
     }
 
     private class SDLMixerPlayer extends AudioPlayer {
-        private int loops = 1;
-        private boolean isrun = false;
-        private String bgmFileName = "";
+        private String savedFile = "";
 
         public SDLMixerPlayer(InputStream stream, String type) {
             try {
@@ -246,8 +336,8 @@ public class PlatformPlayer implements Player {
                     filename = "./rms/" + Mobile.getPlatform().loader.suitename + "/" + filename;
                 }
 
-                bgmFileName = filename + type;
-                File file = new File(bgmFileName);
+                savedFile = filename + type;
+                File file = new File(savedFile);
 
                 if (!file.exists()) {
                     try {
@@ -263,17 +353,19 @@ public class PlatformPlayer implements Player {
                         Log.d(TAG, "Error saving file: " + e.getMessage());
                     }
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 Log.d(TAG, "Error saving rms file: " + e.getMessage());
             }
         }
 
+        @Override
         public void start() {
-            if (bgmFileName.isEmpty()) {
+            if (savedFile.isEmpty()) {
                 return;
             }
 
-            if (isRunning() && bgmFileName.endsWith(".mid")) {
+            if (isRunning() && savedFile.endsWith(".mid")) {
                 return;
             }
 
@@ -288,20 +380,22 @@ public class PlatformPlayer implements Player {
                 frame[4] = (byte) (loops >> 16);
                 frame[5] = (byte) (loops >> 24);
 
-                byte[] fname = bgmFileName.getBytes("UTF-8");
+                byte[] fname = savedFile.getBytes("UTF-8");
                 for (int i = 0; i < fname.length; i++) {
                     frame[i + 6] = fname[i];
                 }
 
-                Audio.start(bgmFileName, loops);
+                Audio.start(savedFile, loops);
             }
             catch (Exception e) {
                 Log.d(TAG, "Error starting sound: " + e.getMessage());
             }
-            isrun = true;
+            running = true;
             state = Player.STARTED;
+            notifyListeners(PlayerListener.STARTED, getMediaTime());
         }
 
+        @Override
         public void stop() {
             if (!isRunning()) return;
             try {
@@ -309,10 +403,9 @@ public class PlatformPlayer implements Player {
                 frame[0] = '$';
                 frame[1] = 'S';
 
-                if (bgmFileName.endsWith(".mid")) {
+                if (savedFile.endsWith(".mid")) {
                     Audio.stop(1);
-                }
-                else if (bgmFileName.endsWith(".wav")) {
+                } else if (savedFile.endsWith(".wav")) {
                     Audio.stop(2);
                 }
             }
@@ -320,69 +413,68 @@ public class PlatformPlayer implements Player {
                 Log.d(TAG, "Error stopping sound: " + e.getMessage());
             }
 
-            isrun = false;
+            running = false;
             state = Player.PREFETCHED;
+            notifyListeners(PlayerListener.STARTED, getMediaTime());
         }
 
+        @Override
         public void deallocate() {
-        }
-
-        public void setLoopCount(int count) {
-            loops = count;
-        }
-
-        public long setMediaTime(long now) {
-            return now;
-        }
-
-        public long getMediaTime() {
-            return 0;
-        }
-
-        public boolean isRunning() {
-            return isrun;
+            // Prefetch does "nothing" in each internal player so deallocate must also do nothing
         }
     }
 
     private static class MIDIControl implements javax.microedition.media.control.MIDIControl {
+
+        @Override
         public int[] getBankList(boolean custom) {
             return new int[]{};
         }
 
+        @Override
         public int getChannelVolume(int channel) {
             return 0;
         }
 
+        @Override
         public java.lang.String getKeyName(int bank, int prog, int key) {
             return "";
         }
 
+        @Override
         public int[] getProgram(int channel) {
             return new int[]{};
         }
 
+        @Override
         public int[] getProgramList(int bank) {
             return new int[]{};
         }
 
-        public java.lang.String getProgramName(int bank, int prog) {
+        @Override
+        public String getProgramName(int bank, int prog) {
             return "";
         }
 
+        @Override
         public boolean isBankQuerySupported() {
             return false;
         }
 
+        @Override
         public int longMidiEvent(byte[] data, int offset, int length) {
             return 0;
         }
 
+        @Override
         public void setChannelVolume(int channel, int volume) {
         }
 
+        @Override
         public void setProgram(int channel, int bank, int program) {
         }
 
+        @Override
         public void shortMidiEvent(int type, int data1, int data2) {
         }
     }
@@ -391,19 +483,23 @@ public class PlatformPlayer implements Player {
         private int level = 100;
         private boolean muted = false;
 
+        @Override
         public int getLevel() {
             return level;
         }
 
+        @Override
         public boolean isMuted() {
             return muted;
         }
 
+        @Override
         public int setLevel(int value) {
             level = value;
             return level;
         }
 
+        @Override
         public void setMute(boolean mute) {
             muted = mute;
         }
@@ -413,30 +509,36 @@ public class PlatformPlayer implements Player {
         int tempo = 5000;
         int rate = 5000;
 
+        @Override
         public int getTempo() {
             return tempo;
         }
 
-        public int setTempo(int millitempo) {
-            tempo = millitempo;
+        @Override
+        public int setTempo(int milliTempo) {
+            tempo = milliTempo;
             return tempo;
         }
 
         // RateControl interface
+        @Override
         public int getMaxRate() {
             return rate;
         }
 
+        @Override
         public int getMinRate() {
             return rate;
         }
 
+        @Override
         public int getRate() {
             return rate;
         }
 
-        public int setRate(int millirate) {
-            rate = millirate;
+        @Override
+        public int setRate(int milliRate) {
+            rate = milliRate;
             return rate;
         }
     }

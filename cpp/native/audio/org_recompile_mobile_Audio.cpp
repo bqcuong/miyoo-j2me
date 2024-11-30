@@ -177,7 +177,6 @@ void changeBGM(const char* fname,int loop)
 			Mix_PlayChannel(0, wave, loop);
 		}
 	}
-	
 }
 
 /*
