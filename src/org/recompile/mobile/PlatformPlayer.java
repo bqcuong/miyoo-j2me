@@ -47,8 +47,6 @@ public class PlatformPlayer implements Player {
         controls = new Control[3];
         contentType = type;
 
-        Log.d(TAG, "media type: " + type);
-
         if (!Mobile.sound) {
             player = new audioplayer();
         }
@@ -60,7 +58,7 @@ public class PlatformPlayer implements Player {
             else if (type.equalsIgnoreCase("audio/mpeg") || type.equalsIgnoreCase("audio/x-wav") || type.equalsIgnoreCase("audio/wav")) {
                 player = new midiPlayer(stream, ".wav");
             }
-            else { /* TODO: Implement a player for amr and mpeg audio types */
+            else {
                 Log.d(TAG, "No Player For: " + contentType);
                 player = new audioplayer();
             }
@@ -75,14 +73,6 @@ public class PlatformPlayer implements Player {
         listeners = new Vector<>();
         controls = new Control[3];
         Log.d(TAG, "Player locator: " + locator);
-    }
-
-    public String encodeHexString(byte[] data, int len) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < len; i++) {
-            sb.append(String.format("%02x", data[i]));
-        }
-        return sb.toString();
     }
 
     final public String encodeMD5String(byte[] data) {
