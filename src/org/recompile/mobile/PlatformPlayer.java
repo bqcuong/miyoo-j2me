@@ -274,6 +274,14 @@ public class PlatformPlayer implements Player {
         notifyListeners(PlayerListener.END_OF_MEDIA, 0);
     }
 
+    public void onCallback(String message) {
+        System.out.println("Callback received in class PlatformPlayer: " + message);
+    }
+
+    private native void _start(String soundFile, int loop);
+
+    private native void _stop(int type);
+
     private static abstract class AudioPlayer {
         protected long mediaTime = 0;
         protected int loops = 1;
@@ -389,7 +397,8 @@ public class PlatformPlayer implements Player {
                     frame[i + 6] = fname[i];
                 }
 
-                Audio.start(savedFile, loops);
+//                Audio.start(savedFile, loops);
+                PlatformPlayer.this._start(savedFile, loops);
             }
             catch (Exception e) {
                 Log.d(TAG, "Error starting sound: " + e.getMessage());
@@ -408,10 +417,12 @@ public class PlatformPlayer implements Player {
                 frame[1] = 'S';
 
                 if (savedFile.endsWith(".mid")) {
-                    Audio.stop(1);
+//                    Audio.stop(1);
+                    PlatformPlayer.this._stop(1);
                 }
                 else if (savedFile.endsWith(".wav")) {
-                    Audio.stop(2);
+//                    Audio.stop(2);
+                    PlatformPlayer.this._stop(2);
                 }
             }
             catch (Exception e) {

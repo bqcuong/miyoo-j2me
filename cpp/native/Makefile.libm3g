@@ -18,7 +18,7 @@ TARGET = libm3g.so
 
 all: $(TARGET)  
 
-$(TARGET): $(OBJS1)  $(OBJS2)  
+$(TARGET): $(OBJS1) $(OBJS2)
 	$(CPP_COMPILER) -shared -o $(TARGET) $(OBJS1)  $(OBJS2) -L./lib -lEGL -lGLESv1_CM -lz
 
 clean:  

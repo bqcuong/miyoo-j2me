@@ -63,7 +63,6 @@ public abstract class MIDlet
 	public final void notifyDestroyed()
 	{ 
 		Audio.destroy();
-
 		Log.d(TAG, "MIDlet sent Destroyed Notification");
 		System.exit(0);
 	}

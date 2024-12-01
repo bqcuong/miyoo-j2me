@@ -3,7 +3,9 @@ CPP_COMPILER = /opt/mmiyoo/bin/arm-linux-gnueabihf-g++
 CFLAGS = -O3 -fno-strict-aliasing -fPIC -marm -mtune=cortex-a7 -march=armv7ve+simd -mfpu=neon-vfpv4 -mfloat-abi=hard -I./audio -I./include -I./include/linux 
 
 SRCS1 = audio/org_recompile_mobile_Audio.cpp
-OBJS1 = $(SRCS1:%.cpp=%.o) 
+SRCS2 = audio/org_recompile_mobile_PlatformPlayer.cpp
+OBJS1 = $(SRCS1:%.cpp=%.o)
+OBJS2 = $(SRCS2:%.cpp=%.o)
 
 TARGET = libaudio.so
 
@@ -12,9 +14,9 @@ TARGET = libaudio.so
  
 all: $(TARGET)  
  
-$(TARGET): $(OBJS1)
-	$(CPP_COMPILER) -shared -o $(TARGET) $(OBJS1) -lSDL2 -lSDL2_mixer
+$(TARGET): $(OBJS1) $(OBJS2)
+	$(CPP_COMPILER) -shared -o $(TARGET) $(OBJS1) $(OBJS2) -lSDL2 -lSDL2_mixer
   
 clean:  
-	rm -f $(OBJS1)
+	rm -f $(OBJS1) $(OBJS2)
 	rm -f $(TARGET)

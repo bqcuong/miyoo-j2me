@@ -4,32 +4,28 @@
 
 #ifndef _Included_org_recompile_mobile_Audio
 #define _Included_org_recompile_mobile_Audio
-
-/*
- * Class:     org_recompile_mobile_Audio
- * Method:    _start
- * Signature: ([B)V
- */
+#ifdef __cplusplus
 extern "C" {
-JNIEXPORT void JNICALL Java_org_recompile_mobile_Audio__1start
-  (JNIEnv *, jclass, jstring, jint);
+#endif
+int getVolumeLevel();
 
 /*
  * Class:     org_recompile_mobile_Audio
- * Method:    _stop
- * Signature: ()V
+ * Method:    _setVol
+ * Signature: (I)V
  */
-JNIEXPORT void JNICALL Java_org_recompile_mobile_Audio__1stop
-  (JNIEnv *, jclass, jint type);
-  
 JNIEXPORT void JNICALL Java_org_recompile_mobile_Audio__1setVol
   (JNIEnv *, jclass, jint);
-  
+
+/*
+ * Class:     org_recompile_mobile_Audio
+ * Method:    _destroy
+ * Signature: ()V
+ */
 JNIEXPORT void JNICALL Java_org_recompile_mobile_Audio__1destroy
   (JNIEnv *, jclass);
-  
+
+#ifdef __cplusplus
 }
-
-
-
+#endif
 #endif
