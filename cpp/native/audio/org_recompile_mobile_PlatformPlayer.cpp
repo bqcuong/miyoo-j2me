@@ -9,6 +9,10 @@
 Mix_Music * gBGMMusic = NULL;
 Mix_Chunk * wave = NULL;
 
+jobject musicCbObject = NULL;
+jobject soundCbObject = NULL;
+JavaVM* javaVM = NULL;
+
 bool endsWith(const char * src, const char * str) {
     if (strlen(src) < strlen(str)) {
         return false;
@@ -22,25 +26,73 @@ bool endsWith(const char * src, const char * str) {
     return true;
 }
 
-//JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM * vm, void * reserved) {
-//    JNIEnv * env = NULL;
-//    if (vm->GetEnv((void ** ) & env, JNI_VERSION_10) != JNI_OK) {
-//        return -1;
-//    }
-//
-//    if (env == NULL) {
-//        return -1;
-//    }
-//
-//    return JNI_VERSION_10;
-//}
+JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM* vm, void* reserved) {
+    JNIEnv * env = NULL;
+    javaVM = vm;
+    if (vm->GetEnv((void ** ) & env, JNI_VERSION_10) != JNI_OK) {
+        return -1;
+    }
 
-void musicFinished() {
-    printf("musicFinished\n");
+    if (env == NULL) {
+        return -1;
+    }
+
+    return JNI_VERSION_10;
+}
+
+void onMusicFinished() {
+//    printf("onMusicFinished\n");
+
+    JNIEnv* threadEnv = NULL;
+    if (javaVM->AttachCurrentThread((void**) & threadEnv, NULL) != JNI_OK) {
+        printf("onMusicFinished: Failed to attach current thread to javaVM\n");
+        return;
+    }
+
+    jclass javaClass = threadEnv->GetObjectClass(musicCbObject);
+    jstring message = threadEnv->NewStringUTF("End of the music!");
+    jmethodID callbackMethod = threadEnv->GetMethodID(javaClass, "onCallback", "(Ljava/lang/String;)V");
+    if (callbackMethod == NULL) {
+        printf("onMusicFinished: Could not find the callback method!\n");
+        return;
+    }
+
+    threadEnv->CallVoidMethod(musicCbObject, callbackMethod, message);
+
+    threadEnv->DeleteLocalRef(message);
+    threadEnv->DeleteLocalRef(javaClass);
+//    javaVM->DetachCurrentThread();
+    threadEnv->DeleteGlobalRef(musicCbObject);
+
     Mix_HookMusicFinished(NULL);
 }
 
-void changeBGM(const char * fname, int loop) {
+void SDLCALL onSoundFinished(int channel) {
+//    printf("onSoundFinished\n");
+
+    JNIEnv* threadEnv = NULL;
+    if (javaVM->AttachCurrentThread((void**) & threadEnv, NULL) != JNI_OK) {
+        printf("onSoundFinished: Failed to attach current thread to javaVM\n");
+        return;
+    }
+
+    jclass javaClass = threadEnv->GetObjectClass(soundCbObject);
+    jstring message = threadEnv->NewStringUTF("End of the sound effect!");
+    jmethodID callbackMethod = threadEnv->GetMethodID(javaClass, "onCallback", "(Ljava/lang/String;)V");
+    if (callbackMethod == NULL) {
+        printf("onSoundFinished: Could not find the callback method!\n");
+        return;
+    }
+
+    threadEnv->CallVoidMethod(soundCbObject, callbackMethod, message);
+
+    threadEnv->DeleteLocalRef(message);
+    threadEnv->DeleteLocalRef(javaClass);
+//    javaVM->DetachCurrentThread();
+    threadEnv->DeleteGlobalRef(soundCbObject);
+}
+
+void changeBGM(JNIEnv *env, jobject jObj, const char * fname, int loop) {
     if (endsWith(fname, ".mid")) {
         if (Mix_PlayingMusic()) {
             Mix_HaltMusic();
@@ -54,7 +106,7 @@ void changeBGM(const char * fname, int loop) {
         gBGMMusic = Mix_LoadMUS(fname);
         if (gBGMMusic != NULL) {
             if (loop != -1) {
-                Mix_HookMusicFinished(musicFinished);
+                Mix_HookMusicFinished(onMusicFinished);
             }
             else {
                 Mix_HookMusicFinished(NULL);
@@ -64,6 +116,8 @@ void changeBGM(const char * fname, int loop) {
                 Mix_HookMusicFinished(NULL);
                 return;
             }
+
+            musicCbObject = env->NewGlobalRef(jObj);
         }
     }
     else if (endsWith(fname, ".wav")) {
@@ -78,9 +132,13 @@ void changeBGM(const char * fname, int loop) {
 
         wave = Mix_LoadWAV(fname);
         if (wave != NULL) {
+            Mix_ChannelFinished(onSoundFinished);
+
             Mix_VolumeChunk(wave, getVolumeLevel());
             loop = loop > 0 ? loop - 1 : loop; // 0: no loop, -1: infinite loop, n: n times of loop
             Mix_PlayChannel(0, wave, loop);
+
+            soundCbObject = env->NewGlobalRef(jObj);
         }
     }
 }
@@ -93,20 +151,8 @@ void changeBGM(const char * fname, int loop) {
 JNIEXPORT void JNICALL Java_org_recompile_mobile_PlatformPlayer__1start
 (JNIEnv *env, jobject jObj, jstring aBgm, jint loop) {
     const char * str = env->GetStringUTFChars(aBgm, 0);
-    changeBGM(str, loop);
+    changeBGM(env, jObj, str, loop);
     env->ReleaseStringUTFChars(aBgm, str);
-
-//     test callback
-    jclass javaClass = env->GetObjectClass(jObj);
-    jmethodID callbackMethod = env->GetMethodID(javaClass, "onCallback", "(Ljava/lang/String;)V");
-    if (callbackMethod == NULL) {
-        printf("Could not find the callback method!\n");
-        return; // Handle the error (method not found)
-    }
-    jstring message = env->NewStringUTF("Hello from C++!");
-    env->CallVoidMethod(jObj, callbackMethod, message);
-    env->DeleteLocalRef(message);
-    env->DeleteLocalRef(javaClass);
 }
 
 /*

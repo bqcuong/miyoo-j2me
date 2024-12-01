@@ -27,6 +27,16 @@ public interface Player extends Controllable
 	public static final long TIME_UNKNOWN = -1;
 	public static final int UNREALIZED = 100;
 
+	public static String getStateName(int state) {
+		switch (state) {
+			case UNREALIZED: return "Unrealized";
+			case REALIZED: return "Realized";
+			case PREFETCHED: return "Prefetch";
+			case STARTED: return "Started";
+			case CLOSED: return "Close";
+			default: return "Unknown";
+		}
+	}
 
 	public void addPlayerListener(PlayerListener playerListener);
 

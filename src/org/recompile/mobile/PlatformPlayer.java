@@ -47,7 +47,7 @@ public class PlatformPlayer implements Player {
         controls = new Control[3];
         contentType = type;
 
-        Log.d(TAG, "Received: " + type);
+        Log.d(TAG, "--------------------------\nReceived: " + type);
 
         if (!Mobile.sound) {
             player = new FakeAudioPlayer();
@@ -107,6 +107,7 @@ public class PlatformPlayer implements Player {
             throw new IllegalStateException("Cannot realize player, as it is in the CLOSED state");
         }
 
+//        Log.d(TAG, "Realized: " + Player.getStateName(state));
         if (this.state == Player.UNREALIZED) {
             state = Player.REALIZED;
         }
@@ -122,6 +123,7 @@ public class PlatformPlayer implements Player {
             realize();
         }
 
+//        Log.d(TAG, "Prefetch: " + Player.getStateName(state));
         if (this.state == Player.REALIZED) {
             state = Player.PREFETCHED;
         }
@@ -137,6 +139,8 @@ public class PlatformPlayer implements Player {
             if (this.state == Player.REALIZED || this.state == Player.UNREALIZED) {
                 prefetch();
             }
+
+//            Log.d(TAG, "Start: " + Player.getStateName(state));
             if (this.state == Player.PREFETCHED) {
                 player.start();
             }
@@ -153,6 +157,7 @@ public class PlatformPlayer implements Player {
         }
 
         try {
+//            Log.d(TAG, "Stop: " + Player.getStateName(state));
             if (this.state == Player.STARTED) {
                 player.stop();
             }
@@ -169,6 +174,7 @@ public class PlatformPlayer implements Player {
         }
 
         try {
+//            Log.d(TAG, "Close: " + Player.getStateName(state));
             if (player.isRunning()) {
                 stop();
             }
@@ -184,6 +190,7 @@ public class PlatformPlayer implements Player {
 
     @Override
     public void deallocate() {
+//        Log.d(TAG, "Deallocate: " + Player.getStateName(state));
         if (this.state == Player.CLOSED) { throw new IllegalStateException("Cannot deallocate player, it is already CLOSED."); }
 
         if (player.isRunning()) {
@@ -267,15 +274,11 @@ public class PlatformPlayer implements Player {
         return controls;
     }
 
-    // Will be invoked by libaudio
-    public void musicFinish() {
-        Log.d(TAG, "musicFinish() is called!");
-        state = Player.PREFETCHED;
-        notifyListeners(PlayerListener.END_OF_MEDIA, 0);
-    }
-
     public void onCallback(String message) {
-        System.out.println("Callback received in class PlatformPlayer: " + message);
+//        Log.d(TAG,"Callback received: " + message);
+        state = Player.PREFETCHED;
+        player.running = false;
+        notifyListeners(PlayerListener.END_OF_MEDIA, 0);
     }
 
     private native void _start(String soundFile, int loop);
@@ -377,10 +380,6 @@ public class PlatformPlayer implements Player {
                 return;
             }
 
-            if (isRunning() && savedFile.endsWith(".mid")) {
-                return;
-            }
-
             try {
 
                 byte[] frame = new byte[100];
@@ -397,7 +396,6 @@ public class PlatformPlayer implements Player {
                     frame[i + 6] = fname[i];
                 }
 
-//                Audio.start(savedFile, loops);
                 PlatformPlayer.this._start(savedFile, loops);
             }
             catch (Exception e) {
@@ -417,11 +415,9 @@ public class PlatformPlayer implements Player {
                 frame[1] = 'S';
 
                 if (savedFile.endsWith(".mid")) {
-//                    Audio.stop(1);
                     PlatformPlayer.this._stop(1);
                 }
                 else if (savedFile.endsWith(".wav")) {
-//                    Audio.stop(2);
                     PlatformPlayer.this._stop(2);
                 }
             }
