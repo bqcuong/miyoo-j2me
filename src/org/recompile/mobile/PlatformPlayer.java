@@ -47,14 +47,18 @@ public class PlatformPlayer implements Player {
         controls = new Control[3];
         contentType = type;
 
+        Log.d(TAG, "Received: " + type);
+
         if (!Mobile.sound) {
             player = new FakeAudioPlayer();
         }
         else {
+            // Normally used as background music
             if (type.equalsIgnoreCase("audio/mid") || type.equalsIgnoreCase("audio/midi") || type.equalsIgnoreCase("sp-midi")
                 || type.equalsIgnoreCase("audio/spmidi")) {
                 player = new SDLMixerPlayer(stream, ".mid");
             }
+            // Normally used as sound effects
             else if (type.equalsIgnoreCase("audio/mpeg") || type.equalsIgnoreCase("audio/x-wav") || type.equalsIgnoreCase("audio/wav")) {
                 player = new SDLMixerPlayer(stream, ".wav");
             }
@@ -75,10 +79,6 @@ public class PlatformPlayer implements Player {
         Log.d(TAG, "Player locator: " + locator);
     }
 
-    public void onCallback(String message) {
-        System.out.println("Callback received in class PlatformPlayer: " + message);
-    }
-
     final public String encodeMD5String(byte[] data) {
         StringBuilder sb = new StringBuilder();
         try {
@@ -97,7 +97,7 @@ public class PlatformPlayer implements Player {
 
     @Override
     public int getState() {
-        Log.d(TAG, "Player getState: " + state);
+//        Log.d(TAG, "Player getState: " + state);
         return state;
     }
 

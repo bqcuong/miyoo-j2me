@@ -17,8 +17,8 @@ public class Audio {
         _destroy();
     }
 
-    public void onCallback(String message) {
-        System.out.println("Callback received in class Audio: " + message);
+    public static void onCallback(String message) {
+        System.out.println("Callback received in class PlatformPlayer: " + message);
     }
 
     private native static void _start(String soundFile, int loop);

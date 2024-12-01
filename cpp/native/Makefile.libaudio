@@ -13,7 +13,7 @@ TARGET = libaudio.so
 all: $(TARGET)  
  
 $(TARGET): $(OBJS1)
-	$(CPP_COMPILER) -shared -o $(TARGET) $(OBJS1)   -lSDL2 -lSDL2_mixer
+	$(CPP_COMPILER) -shared -o $(TARGET) $(OBJS1) -lSDL2 -lSDL2_mixer
   
 clean:  
 	rm -f $(OBJS1)

@@ -34,7 +34,6 @@ public final class Manager
 
 	public static Player createPlayer(InputStream stream, String type) throws IOException, MediaException
 	{
-		Log.d(TAG, "Create PlatformPlayer from stream: " + type);
 		return new PlatformPlayer(stream, type);
 	}
 
