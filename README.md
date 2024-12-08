@@ -2,6 +2,7 @@
 This repository is a fork of [freej2me-miyoomini](https://github.com/aweigit/freej2me-miyoomini). It aims to provide full support for ease of development environment and to resolve all existing issues, primarily related to sound effects. The code is optimized for the Onion OS on Miyoo Mini Plus.
 
 ## How to build
+Docker is the only software required to build this project. Ensure that it is installed first.
 ```
 make build
 ```
