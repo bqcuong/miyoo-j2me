@@ -5,13 +5,15 @@
  */
 package org.lwjgl.egl;
 
-import java.nio.*;
+import org.lwjgl.system.NativeType;
 
-import org.lwjgl.system.*;
+import java.nio.IntBuffer;
 
-import static org.lwjgl.system.Checks.*;
-import static org.lwjgl.system.JNI.*;
-import static org.lwjgl.system.MemoryUtil.*;
+import static org.lwjgl.system.Checks.CHECKS;
+import static org.lwjgl.system.Checks.check;
+import static org.lwjgl.system.JNI.callI;
+import static org.lwjgl.system.JNI.callPI;
+import static org.lwjgl.system.MemoryUtil.memAddress;
 
 /**
  * Native bindings to the <a href="https://www.khronos.org/registry/EGL/extensions/EXT/EGL_EXT_compositor.txt">EXT_compositor</a> extension.

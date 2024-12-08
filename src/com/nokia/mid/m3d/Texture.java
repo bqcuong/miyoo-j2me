@@ -17,9 +17,9 @@
 
 package com.nokia.mid.m3d;
 
-import javax.microedition.lcdui.Image;
-
 import org.recompile.mobile.PlatformImage;
+
+import javax.microedition.lcdui.Image;
 
 public class Texture
 {

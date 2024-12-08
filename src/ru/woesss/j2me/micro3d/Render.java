@@ -24,30 +24,25 @@ package ru.woesss.j2me.micro3d;
 // import android.graphics.Rect;
 // import android.opengl.GLU;
 // import android.opengl.GLUtils;
+
 import android.util.Log;
-
-import java.awt.image.BufferedImage;
-
-import org.lwjgl.PointerBuffer;
-import org.lwjgl.opengles.*;
-import static org.lwjgl.egl.EGL14.*;
-import static org.lwjgl.opengles.GLES20.*;
-
 import com.mascotcapsule.micro3d.v3.Graphics3D;
+import com.mascotcapsule.micro3d.v3.Utils;
+import org.lwjgl.PointerBuffer;
+import org.lwjgl.opengles.GLES;
+import org.recompile.mobile.PlatformGraphics;
+import ru.woesss.j2me.micro3d.RenderNode.FigureNode;
 
+import javax.microedition.lcdui.Graphics;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.LinkedList;
 
-
-import javax.microedition.lcdui.Graphics;
-import org.recompile.mobile.PlatformGraphics;
-import java.awt.Rectangle;  
-import java.awt.Color; 
-
-import ru.woesss.j2me.micro3d.RenderNode.FigureNode;
-import com.mascotcapsule.micro3d.v3.Utils;
+import static org.lwjgl.egl.EGL14.*;
+import static org.lwjgl.opengles.GLES20.*;
 
 public class Render {
 	private static final FloatBuffer BG_VBO = BufferUtils.createFloatBuffer(8 * 2)

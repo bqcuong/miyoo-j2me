@@ -5,13 +5,11 @@
  */
 package org.lwjgl.egl;
 
-import javax.annotation.*;
+import org.lwjgl.PointerBuffer;
+import org.lwjgl.system.NativeType;
 
-import java.nio.*;
-
-import org.lwjgl.*;
-
-import org.lwjgl.system.*;
+import javax.annotation.Nullable;
+import java.nio.IntBuffer;
 
 import static org.lwjgl.system.Checks.*;
 import static org.lwjgl.system.JNI.*;

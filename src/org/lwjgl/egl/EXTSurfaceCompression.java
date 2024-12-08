@@ -5,17 +5,16 @@
  */
 package org.lwjgl.egl;
 
-import javax.annotation.*;
+import org.lwjgl.PointerBuffer;
+import org.lwjgl.system.NativeType;
 
-import java.nio.*;
-
-import org.lwjgl.*;
-
-import org.lwjgl.system.*;
+import javax.annotation.Nullable;
+import java.nio.IntBuffer;
 
 import static org.lwjgl.system.Checks.*;
-import static org.lwjgl.system.JNI.*;
-import static org.lwjgl.system.MemoryUtil.*;
+import static org.lwjgl.system.JNI.callPPPPPI;
+import static org.lwjgl.system.MemoryUtil.memAddress;
+import static org.lwjgl.system.MemoryUtil.memAddressSafe;
 
 /**
  * Native bindings to the <a href="https://www.khronos.org/registry/EGL/extensions/EXT/EGL_EXT_surface_compression.txt">EXT_surface_compression</a> extension.

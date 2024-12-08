@@ -5,10 +5,11 @@
  */
 package org.lwjgl.egl;
 
-import org.lwjgl.system.*;
+import org.lwjgl.system.NativeType;
 
-import static org.lwjgl.system.Checks.*;
-import static org.lwjgl.system.JNI.*;
+import static org.lwjgl.system.Checks.CHECKS;
+import static org.lwjgl.system.Checks.check;
+import static org.lwjgl.system.JNI.callPPJI;
 
 /**
  * Native bindings to the <a href="https://www.khronos.org/registry/EGL/extensions/ANDROID/EGL_ANDROID_presentation_time.txt">ANDROID_presentation_time</a> extension.

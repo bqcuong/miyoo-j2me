@@ -17,8 +17,6 @@
 
 package com.siemens.mp.game;
 
-import org.recompile.mobile.Mobile;
-
 public class MelodyComposer
 {
 	private int len = 0;

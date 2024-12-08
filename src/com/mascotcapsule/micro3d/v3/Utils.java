@@ -16,9 +16,10 @@
 
 package com.mascotcapsule.micro3d.v3;
 
+import ru.woesss.j2me.micro3d.MathUtil;
+
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
-import ru.woesss.j2me.micro3d.MathUtil;
 
 public class Utils {
 	static public final String TAG = Utils.class.getSimpleName();

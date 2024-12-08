@@ -16,9 +16,6 @@
 */
 package com.nokia.mid.ui;
 
-import javax.microedition.lcdui.Command;
-import javax.microedition.lcdui.CommandListener;
-
 public abstract class FullCanvas extends javax.microedition.lcdui.Canvas
 {
 

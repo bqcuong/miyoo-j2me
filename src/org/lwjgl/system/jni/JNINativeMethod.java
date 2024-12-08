@@ -5,16 +5,15 @@
  */
 package org.lwjgl.system.jni;
 
-import javax.annotation.*;
-
-import java.nio.*;
-
-import org.lwjgl.*;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.system.*;
 
+import javax.annotation.Nullable;
+import java.nio.ByteBuffer;
+
 import static org.lwjgl.system.Checks.*;
+import static org.lwjgl.system.MemoryStack.stackGet;
 import static org.lwjgl.system.MemoryUtil.*;
-import static org.lwjgl.system.MemoryStack.*;
 
 /**
  * <h3>Layout</h3>

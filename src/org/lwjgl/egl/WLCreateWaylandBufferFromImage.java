@@ -5,10 +5,11 @@
  */
 package org.lwjgl.egl;
 
-import org.lwjgl.system.*;
+import org.lwjgl.system.NativeType;
 
-import static org.lwjgl.system.Checks.*;
-import static org.lwjgl.system.JNI.*;
+import static org.lwjgl.system.Checks.CHECKS;
+import static org.lwjgl.system.Checks.check;
+import static org.lwjgl.system.JNI.callPPP;
 
 /**
  * Native bindings to the <a href="https://www.khronos.org/registry/EGL/extensions/WL/EGL_WL_create_wayland_buffer_from_image.txt">WL_create_wayland_buffer_from_image</a> extension.

@@ -5,15 +5,17 @@
  */
 package org.lwjgl.system.libc;
 
-import javax.annotation.*;
+import org.lwjgl.system.Library;
+import org.lwjgl.system.MemoryStack;
+import org.lwjgl.system.NativeType;
 
-import java.nio.*;
-
-import org.lwjgl.system.*;
+import javax.annotation.Nullable;
+import java.nio.ByteBuffer;
 
 import static org.lwjgl.system.Checks.*;
-import static org.lwjgl.system.MemoryStack.*;
-import static org.lwjgl.system.MemoryUtil.*;
+import static org.lwjgl.system.MemoryStack.stackGet;
+import static org.lwjgl.system.MemoryUtil.memAddress;
+import static org.lwjgl.system.MemoryUtil.memAddressSafe;
 
 /** Native bindings to stdio.h. */
 public class LibCStdio {

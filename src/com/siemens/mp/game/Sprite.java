@@ -17,10 +17,8 @@
 
 package com.siemens.mp.game;
 
-import org.recompile.mobile.Mobile;
-
-import javax.microedition.lcdui.Image;
 import javax.microedition.lcdui.Graphics;
+import javax.microedition.lcdui.Image;
 
 public class Sprite
 {

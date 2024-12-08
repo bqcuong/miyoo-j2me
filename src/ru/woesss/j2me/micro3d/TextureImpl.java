@@ -17,21 +17,16 @@
 package ru.woesss.j2me.micro3d;
 
 //import static android.opengl.GLES20.*;
-import org.lwjgl.*;
-import org.lwjgl.opengles.*;
-import static org.lwjgl.egl.EGL14.*;
-import static org.lwjgl.opengles.GLES20.*;
 
 import android.util.Log;
+import com.mascotcapsule.micro3d.v3.Utils;
+import org.recompile.mobile.Mobile;
 
+import javax.microedition.lcdui.Image;
 import java.io.IOException;
 import java.nio.IntBuffer;
 
-import javax.microedition.lcdui.Image;
-//import javax.microedition.shell.AppClassLoader;
-
-import org.recompile.mobile.Mobile;
-import com.mascotcapsule.micro3d.v3.Utils;
+import static org.lwjgl.opengles.GLES20.*;
 
 public final class TextureImpl {
 	static int sLastId;

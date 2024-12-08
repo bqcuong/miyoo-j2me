@@ -5,13 +5,14 @@
  */
 package org.lwjgl.egl;
 
-import java.nio.*;
+import org.lwjgl.system.NativeType;
 
-import org.lwjgl.system.*;
+import java.nio.LongBuffer;
 
-import static org.lwjgl.system.Checks.*;
-import static org.lwjgl.system.JNI.*;
-import static org.lwjgl.system.MemoryUtil.*;
+import static org.lwjgl.system.Checks.CHECKS;
+import static org.lwjgl.system.Checks.check;
+import static org.lwjgl.system.JNI.callPPPI;
+import static org.lwjgl.system.MemoryUtil.memAddress;
 
 /**
  * Native bindings to the <a href="https://www.khronos.org/registry/EGL/extensions/KHR/EGL_KHR_stream_fifo.txt">KHR_stream_fifo</a> extension.

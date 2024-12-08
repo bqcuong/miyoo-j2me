@@ -5,11 +5,14 @@
  */
 package org.lwjgl.egl;
 
-import org.lwjgl.system.*;
-import org.lwjgl.system.libffi.*;
+import org.lwjgl.system.CallbackI;
+import org.lwjgl.system.NativeType;
+import org.lwjgl.system.libffi.FFICIF;
 
-import static org.lwjgl.system.APIUtil.*;
-import static org.lwjgl.system.MemoryUtil.*;
+import static org.lwjgl.system.APIUtil.apiCreateCIF;
+import static org.lwjgl.system.APIUtil.apiStdcall;
+import static org.lwjgl.system.MemoryUtil.memGetAddress;
+import static org.lwjgl.system.MemoryUtil.memGetInt;
 import static org.lwjgl.system.libffi.LibFFI.*;
 
 /**

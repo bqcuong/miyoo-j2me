@@ -17,8 +17,6 @@
 
 package com.siemens.mp.misc;
 
-import org.recompile.mobile.Mobile;
-
 public class NativeMem
 {
 	

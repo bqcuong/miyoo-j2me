@@ -5,10 +5,11 @@
  */
 package org.lwjgl.egl;
 
-import org.lwjgl.system.*;
+import org.lwjgl.system.NativeType;
 
-import static org.lwjgl.system.Checks.*;
-import static org.lwjgl.system.JNI.*;
+import static org.lwjgl.system.Checks.CHECKS;
+import static org.lwjgl.system.Checks.check;
+import static org.lwjgl.system.JNI.callPPPI;
 
 /**
  * Native bindings to the <a href="https://www.khronos.org/registry/EGL/extensions/EXT/EGL_EXT_stream_consumer_egloutput.txt">EXT_stream_consumer_egloutput</a> extension.

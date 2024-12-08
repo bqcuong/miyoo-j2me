@@ -17,16 +17,14 @@
 package ru.woesss.j2me.micro3d;
 
 import android.util.Log;
-//import android.util.SparseIntArray;
+import com.mascotcapsule.micro3d.v3.Utils;
 
 import java.io.EOFException;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;
-
-import java.util.LinkedHashMap;  
-import java.util.Map;  
-import com.mascotcapsule.micro3d.v3.Utils;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 class Loader {
 	private static final int BMP_FILE_HEADER_SIZE = 14;

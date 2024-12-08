@@ -5,7 +5,7 @@
  */
 package org.lwjgl.system.libc;
 
-import org.lwjgl.system.*;
+import org.lwjgl.system.Library;
 
 /** Native bindings to errno.h. */
 public class LibCErrno {

@@ -19,13 +19,10 @@ package com.siemens.mp.game;
 
 import android.util.Log;
 import org.recompile.mobile.Mobile;
-import org.recompile.mobile.PlatformImage;
 import org.recompile.mobile.PlatformGraphics;
+import org.recompile.mobile.PlatformImage;
 
-import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
-
-import com.siemens.mp.misc.NativeMem;
 
 public class ExtendedImage extends com.siemens.mp.misc.NativeMem
 {

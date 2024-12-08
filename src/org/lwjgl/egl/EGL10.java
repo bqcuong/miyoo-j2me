@@ -5,17 +5,17 @@
  */
 package org.lwjgl.egl;
 
-import javax.annotation.*;
+import org.lwjgl.PointerBuffer;
+import org.lwjgl.system.MemoryStack;
+import org.lwjgl.system.NativeType;
 
-import java.nio.*;
-
-import org.lwjgl.*;
-
-import org.lwjgl.system.*;
+import javax.annotation.Nullable;
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 
 import static org.lwjgl.system.Checks.*;
 import static org.lwjgl.system.JNI.*;
-import static org.lwjgl.system.MemoryStack.*;
+import static org.lwjgl.system.MemoryStack.stackGet;
 import static org.lwjgl.system.MemoryUtil.*;
 
 /** The core EGL 1.0 functionality. */

@@ -5,15 +5,14 @@
  */
 package org.lwjgl.egl;
 
-import javax.annotation.*;
+import org.lwjgl.system.NativeType;
 
-import java.nio.*;
-
-import org.lwjgl.system.*;
+import javax.annotation.Nullable;
+import java.nio.IntBuffer;
 
 import static org.lwjgl.system.Checks.*;
-import static org.lwjgl.system.JNI.*;
-import static org.lwjgl.system.MemoryUtil.*;
+import static org.lwjgl.system.JNI.callPP;
+import static org.lwjgl.system.MemoryUtil.memAddressSafe;
 
 /**
  * Native bindings to the <a href="https://www.khronos.org/registry/EGL/extensions/ANDROID/EGL_ANDROID_create_native_client_buffer.txt">ANDROID_create_native_client_buffer</a> extension.

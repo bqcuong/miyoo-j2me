@@ -5,16 +5,15 @@
  */
 package org.lwjgl.egl;
 
-import javax.annotation.*;
-
-import java.nio.*;
-
-import org.lwjgl.*;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.system.*;
 
-import static org.lwjgl.system.Checks.*;
+import javax.annotation.Nullable;
+import java.nio.ByteBuffer;
+
+import static org.lwjgl.system.Checks.check;
+import static org.lwjgl.system.MemoryStack.stackGet;
 import static org.lwjgl.system.MemoryUtil.*;
-import static org.lwjgl.system.MemoryStack.*;
 
 /**
  * Specifies the width, height, stride, format and memory pointer of the pixmap to be used by the function {@link HIClientpixmap#eglCreatePixmapSurfaceHI CreatePixmapSurfaceHI} to

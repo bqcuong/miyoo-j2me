@@ -7,14 +7,18 @@ package org.lwjgl.egl;
 import android.util.Log;
 import org.lwjgl.system.*;
 
-import javax.annotation.*;
-import java.nio.*;
-import java.util.*;
+import javax.annotation.Nullable;
+import java.nio.ByteBuffer;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+import java.util.StringTokenizer;
 
-import static java.lang.Math.*;
+import static java.lang.Math.min;
 import static org.lwjgl.egl.EGL10.*;
 import static org.lwjgl.system.APIUtil.*;
-import static org.lwjgl.system.JNI.*;
+import static org.lwjgl.system.JNI.callI;
+import static org.lwjgl.system.JNI.callPP;
 import static org.lwjgl.system.MemoryUtil.*;
 
 /**

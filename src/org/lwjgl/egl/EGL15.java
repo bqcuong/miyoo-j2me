@@ -5,15 +5,15 @@
  */
 package org.lwjgl.egl;
 
-import javax.annotation.*;
+import org.lwjgl.PointerBuffer;
+import org.lwjgl.system.NativeType;
 
-import org.lwjgl.*;
-
-import org.lwjgl.system.*;
+import javax.annotation.Nullable;
 
 import static org.lwjgl.system.Checks.*;
 import static org.lwjgl.system.JNI.*;
-import static org.lwjgl.system.MemoryUtil.*;
+import static org.lwjgl.system.MemoryUtil.memAddress;
+import static org.lwjgl.system.MemoryUtil.memAddressSafe;
 
 /** The core EGL 1.5 functionality. */
 public class EGL15 extends EGL14 {

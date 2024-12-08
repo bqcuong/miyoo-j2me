@@ -5,13 +5,10 @@
  */
 package org.lwjgl.egl;
 
-import javax.annotation.*;
+import org.lwjgl.system.NativeType;
 
-import java.nio.*;
-
-import org.lwjgl.system.*;
-
-import static org.lwjgl.system.Checks.*;
+import javax.annotation.Nullable;
+import java.nio.IntBuffer;
 
 /**
  * Native bindings to the <a href="https://www.khronos.org/registry/EGL/extensions/KHR/EGL_KHR_image.txt">KHR_image</a> extension.

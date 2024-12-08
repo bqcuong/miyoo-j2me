@@ -5,10 +5,12 @@
  */
 package org.lwjgl.egl;
 
-import org.lwjgl.system.*;
+import org.lwjgl.system.NativeType;
 
-import static org.lwjgl.system.Checks.*;
-import static org.lwjgl.system.JNI.*;
+import static org.lwjgl.system.Checks.CHECKS;
+import static org.lwjgl.system.Checks.check;
+import static org.lwjgl.system.JNI.callPI;
+import static org.lwjgl.system.JNI.callPPI;
 
 /** The core EGL 1.1 functionality. */
 public class EGL11 extends EGL10 {

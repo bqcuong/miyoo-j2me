@@ -17,19 +17,13 @@
 package ru.woesss.j2me.micro3d;
 
 import android.util.Log;
-//import android.util.SparseIntArray;
-
-import java.util.ArrayList;  
-import java.util.LinkedHashMap;  
-import java.util.List;  
-import java.util.Map; 
+import com.mascotcapsule.micro3d.v3.Utils;
+import org.recompile.mobile.Mobile;
 
 import java.io.IOException;
-
-//import javax.microedition.shell.AppClassLoader;
-
-import org.recompile.mobile.Mobile;
-import com.mascotcapsule.micro3d.v3.Utils;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class ActTableImpl {
 	Action[] actions;

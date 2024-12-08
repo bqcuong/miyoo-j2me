@@ -5,19 +5,18 @@
 package org.lwjgl.demo.egl;
 
 import android.util.Log;
-import org.lwjgl.egl.*;
+import org.lwjgl.egl.EGL;
+import org.lwjgl.egl.EGLCapabilities;
+import org.lwjgl.opengles.GLES;
+import org.lwjgl.opengles.GLESCapabilities;
+import org.lwjgl.system.MemoryStack;
 
-import org.lwjgl.opengles.*;
-import org.lwjgl.system.*;
-
-import java.lang.reflect.*;
-import java.nio.*;
+import java.lang.reflect.Field;
+import java.nio.IntBuffer;
 
 import static org.lwjgl.egl.EGL14.*;
-
 import static org.lwjgl.opengles.GLES20.*;
-import static org.lwjgl.system.MemoryStack.*;
-import static org.lwjgl.system.MemoryUtil.*;
+import static org.lwjgl.system.MemoryStack.stackPush;
 
 public class EGLDemo {
     static public final String TAG = EGLDemo.class.getSimpleName();

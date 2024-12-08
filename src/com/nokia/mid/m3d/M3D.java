@@ -17,9 +17,8 @@
 
 package com.nokia.mid.m3d;
 
-import org.recompile.mobile.Mobile;
-import org.recompile.mobile.PlatformImage;
 import org.recompile.mobile.PlatformGraphics;
+import org.recompile.mobile.PlatformImage;
 
 import javax.microedition.lcdui.Graphics;
 

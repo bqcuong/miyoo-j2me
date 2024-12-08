@@ -25,10 +25,9 @@ package com.siemens.mp.color_game;
 
 import android.util.Log;
 
-import java.util.Vector;
-
 import javax.microedition.lcdui.Graphics;
 import javax.microedition.lcdui.Image;
+import java.util.Vector;
 
 public class Sprite	extends	Layer
 {

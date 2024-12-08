@@ -18,14 +18,12 @@
 
 package com.siemens.mp.color_game;
 
-import java.util.Vector;
-
-import javax.microedition.lcdui.Image;
-import javax.microedition.lcdui.Graphics;
-
 import android.util.Log;
 import org.recompile.mobile.Mobile;
-import org.recompile.mobile.PlatformGraphics;
+
+import javax.microedition.lcdui.Graphics;
+import javax.microedition.lcdui.Image;
+import java.util.Vector;
 
 public class LayerManager extends javax.microedition.lcdui.game.LayerManager
 {

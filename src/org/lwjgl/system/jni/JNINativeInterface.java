@@ -5,18 +5,19 @@
  */
 package org.lwjgl.system.jni;
 
-import javax.annotation.*;
+import org.lwjgl.PointerBuffer;
+import org.lwjgl.system.Library;
+import org.lwjgl.system.NativeType;
+import org.lwjgl.system.Struct;
 
+import javax.annotation.Nullable;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.nio.*;
-
-import org.lwjgl.*;
-
-import org.lwjgl.system.*;
 
 import static org.lwjgl.system.Checks.*;
 import static org.lwjgl.system.MemoryUtil.*;
-
-import java.lang.reflect.*;
 
 /**
  * Bindings to the Java Native Interface (JNI).

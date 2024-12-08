@@ -5,11 +5,12 @@
  */
 package org.lwjgl.egl;
 
-import org.lwjgl.system.*;
+import org.lwjgl.system.FunctionProvider;
+
 import java.util.Set;
 
-import static org.lwjgl.system.APIUtil.*;
-import static org.lwjgl.system.Checks.*;
+import static org.lwjgl.system.APIUtil.apiLog;
+import static org.lwjgl.system.Checks.checkFunctions;
 
 /** Defines the capabilities of an EGLDisplay or the EGL client library. */
 public class EGLCapabilities {

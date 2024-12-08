@@ -18,33 +18,15 @@ package ru.woesss.j2me.micro3d;
 
 //import static android.opengl.GLES20.*;
 
-import org.lwjgl.egl.*;
-
-import org.lwjgl.opengles.*;
-
-import static org.lwjgl.egl.EGL14.*;
-
-import static org.lwjgl.opengles.GLES20.*;
-
 import android.util.Log;
-
 import com.mascotcapsule.micro3d.v3.Graphics3D;
+import com.mascotcapsule.micro3d.v3.Utils;
 
+import java.io.*;
 import java.nio.ByteBuffer;
-
-//import javax.microedition.util.ContextHolder;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 
-import com.mascotcapsule.micro3d.v3.Utils;
+import static org.lwjgl.opengles.GLES20.*;
 
 abstract class Program {
 	static Tex tex;

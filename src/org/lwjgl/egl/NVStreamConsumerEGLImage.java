@@ -5,17 +5,18 @@
  */
 package org.lwjgl.egl;
 
-import javax.annotation.*;
+import org.lwjgl.PointerBuffer;
+import org.lwjgl.system.NativeType;
 
-import java.nio.*;
-
-import org.lwjgl.*;
-
-import org.lwjgl.system.*;
+import javax.annotation.Nullable;
+import java.nio.IntBuffer;
+import java.nio.LongBuffer;
 
 import static org.lwjgl.system.Checks.*;
-import static org.lwjgl.system.JNI.*;
-import static org.lwjgl.system.MemoryUtil.*;
+import static org.lwjgl.system.JNI.callPPJPPI;
+import static org.lwjgl.system.JNI.callPPPPI;
+import static org.lwjgl.system.MemoryUtil.memAddress;
+import static org.lwjgl.system.MemoryUtil.memAddressSafe;
 
 /**
  * Native bindings to the <a href="https://www.khronos.org/registry/EGL/extensions/NV/EGL_NV_stream_consumer_eglimage.txt">NV_stream_consumer_eglimage</a> extension.

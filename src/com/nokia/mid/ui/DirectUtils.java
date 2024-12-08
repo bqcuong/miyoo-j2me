@@ -16,10 +16,10 @@
 */
 package com.nokia.mid.ui;
 
-import javax.microedition.lcdui.Image;
-import javax.microedition.lcdui.Graphics;
-
 import org.recompile.mobile.PlatformGraphics;
+
+import javax.microedition.lcdui.Graphics;
+import javax.microedition.lcdui.Image;
 
 public class DirectUtils
 {
