@@ -10,7 +10,7 @@ make build
 ## How to install
 1. After the build, the `release/` folder will be generated, containing everything ready to be copied to the SD card except for `jdk`.
 2. Download a compatible JDK version to the `jdk` folder. For example, the *Azul Zulu JDK 17* is used for building `freej2me-sdl.jar` (if the above build instructions are followed), and the Miyoo Mini Plus has the ARM Cortex-A7, so an JDK 17 for ARM 32-bit should work.
-3. On the SD card, create a folder named `JAVA` inside `Emu/` and copy the contents from the `release/` folder.
+3. On the SD card, create a folder named `JAVA` inside `Emu/` and copy the contents from the `release/` folder into `JAVA` folder.
 4. Copy the ROMs to the respective folders in `roms`
 
 ## Keymaps
