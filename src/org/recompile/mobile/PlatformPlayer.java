@@ -21,12 +21,7 @@ import android.util.Log;
 import javax.microedition.media.Control;
 import javax.microedition.media.Player;
 import javax.microedition.media.PlayerListener;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.security.MessageDigest;
+import java.io.*;
 import java.util.Vector;
 
 public class PlatformPlayer implements Player {
@@ -56,11 +51,14 @@ public class PlatformPlayer implements Player {
             // Normally used as background music
             if (type.equalsIgnoreCase("audio/mid") || type.equalsIgnoreCase("audio/midi") || type.equalsIgnoreCase("sp-midi")
                 || type.equalsIgnoreCase("audio/spmidi")) {
-                player = new SDLMixerPlayer(stream, ".mid");
+                player = new SDLMixerPlayer(this, stream, ".mid");
             }
             // Normally used as sound effects
             else if (type.equalsIgnoreCase("audio/mpeg") || type.equalsIgnoreCase("audio/x-wav") || type.equalsIgnoreCase("audio/wav")) {
-                player = new SDLMixerPlayer(stream, ".wav");
+                player = new SDLMixerPlayer(this, stream, ".wav");
+            }
+            else if (type.equalsIgnoreCase("audio/amr")) {
+                player = new SDLMixerPlayer(this, stream, ".amr");
             }
             else {
                 Log.d(TAG, "No Player For: " + contentType);
@@ -79,26 +77,14 @@ public class PlatformPlayer implements Player {
         Log.d(TAG, "Player locator: " + locator);
     }
 
-    final public String encodeMD5String(byte[] data) {
-        StringBuilder sb = new StringBuilder();
-        try {
-            MessageDigest sha256 = MessageDigest.getInstance("MD5");
-            byte[] hashed = sha256.digest(data);
-
-            for (byte b : hashed) {
-                sb.append(String.format("%02x", b));
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "Error encodeMD5String:" + e.getMessage());
-        }
-        return sb.toString();
-
-    }
-
     @Override
     public int getState() {
 //        Log.d(TAG, "Player getState: " + state);
         return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 
     @Override
@@ -215,7 +201,7 @@ public class PlatformPlayer implements Player {
         listeners.remove(playerListener);
     }
 
-    private void notifyListeners(String event, Object eventData) {
+    public void notifyListeners(String event, Object eventData) {
         for (int i = 0; i < listeners.size(); i++) {
             listeners.get(i).playerUpdate(this, event, eventData);
         }
@@ -281,160 +267,9 @@ public class PlatformPlayer implements Player {
         notifyListeners(PlayerListener.END_OF_MEDIA, 0);
     }
 
-    private native void _start(String soundFile, int loop);
+    public native void _start(String soundFile, int loop);
 
-    private native void _stop(int type);
-
-    private static abstract class AudioPlayer {
-        protected long mediaTime = 0;
-        protected int loops = 1;
-        protected boolean running = false;
-
-        public abstract void start();
-
-        public abstract void stop();
-
-        public void setLoopCount(int count) {
-            loops = count;
-        }
-
-        public long setMediaTime(long now) {
-            mediaTime = now;
-            return mediaTime;
-        }
-
-        public long getMediaTime() {
-            return mediaTime;
-        }
-
-        public boolean isRunning() {
-            return running;
-        }
-
-        public abstract void deallocate();
-    }
-
-    private static class FakeAudioPlayer extends AudioPlayer {
-        @Override
-        public void start() {
-
-        }
-
-        @Override
-        public void stop() {
-
-        }
-
-        @Override
-        public void deallocate() {
-
-        }
-    }
-
-    private class SDLMixerPlayer extends AudioPlayer {
-        private String savedFile = "";
-
-        public SDLMixerPlayer(InputStream stream, String type) {
-            try {
-                String rmsPath = "./rms/" + Mobile.getPlatform().loader.suitename;
-                try {
-                    Files.createDirectories(Paths.get(rmsPath));
-                }
-                catch (Exception e) {
-                    Log.d(TAG, "Error create game rms folder:" + e.getMessage());
-                }
-                byte[] buffer = new byte[1024];
-                int len;
-                String filename = "";
-                if ((len = stream.read(buffer)) != -1) {
-                    filename = encodeMD5String(buffer);
-                    filename = "./rms/" + Mobile.getPlatform().loader.suitename + "/" + filename;
-                }
-
-                savedFile = filename + type;
-                File file = new File(savedFile);
-
-                if (!file.exists()) {
-                    try {
-                        file.createNewFile();
-                        FileOutputStream fos = new FileOutputStream(file);
-                        fos.write(buffer, 0, len);
-                        while ((len = stream.read(buffer)) != -1) {
-                            fos.write(buffer, 0, len);
-                        }
-                        fos.close();
-                    }
-                    catch (Exception e) {
-                        Log.d(TAG, "Error saving file: " + e.getMessage());
-                    }
-                }
-            }
-            catch (Exception e) {
-                Log.d(TAG, "Error saving rms file: " + e.getMessage());
-            }
-        }
-
-        @Override
-        public void start() {
-            if (savedFile.isEmpty()) {
-                return;
-            }
-
-            try {
-
-                byte[] frame = new byte[100];
-                frame[0] = '$';
-                frame[1] = 'C';
-
-                frame[2] = (byte) (loops);
-                frame[3] = (byte) (loops >> 8);
-                frame[4] = (byte) (loops >> 16);
-                frame[5] = (byte) (loops >> 24);
-
-                byte[] fname = savedFile.getBytes("UTF-8");
-                for (int i = 0; i < fname.length; i++) {
-                    frame[i + 6] = fname[i];
-                }
-
-                PlatformPlayer.this._start(savedFile, loops);
-            }
-            catch (Exception e) {
-                Log.d(TAG, "Error starting sound: " + e.getMessage());
-            }
-            running = true;
-            state = Player.STARTED;
-            notifyListeners(PlayerListener.STARTED, getMediaTime());
-        }
-
-        @Override
-        public void stop() {
-            if (!isRunning()) return;
-            try {
-                byte[] frame = new byte[100];
-                frame[0] = '$';
-                frame[1] = 'S';
-
-                if (savedFile.endsWith(".mid")) {
-                    PlatformPlayer.this._stop(1);
-                }
-                else if (savedFile.endsWith(".wav")) {
-                    PlatformPlayer.this._stop(2);
-                }
-            }
-            catch (Exception e) {
-                Log.d(TAG, "Error stopping sound: " + e.getMessage());
-            }
-
-            running = false;
-            state = Player.PREFETCHED;
-            notifyListeners(PlayerListener.STARTED, getMediaTime());
-        }
-
-        @Override
-        public void deallocate() {
-            // Prefetch does "nothing" in each internal player so deallocate must also do nothing
-        }
-    }
+    public native void _stop(int type);
 
     private static class MIDIControl implements javax.microedition.media.control.MIDIControl {
 
