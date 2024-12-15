@@ -123,6 +123,8 @@ public class MIDletLoader extends URLClassLoader {
             url = "jar:file:/" + u;
         }
 
+        url = url.replace(" ", "%20").replace("'", "%27");
+
         try {
             HashMap<String, String> env = new HashMap<>();
             env.put("create", "true");

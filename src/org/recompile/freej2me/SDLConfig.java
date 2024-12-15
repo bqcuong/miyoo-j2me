@@ -40,7 +40,7 @@ public class SDLConfig {
     }
 
     public void init(String appname) {
-        configPath = Mobile.getPlatform().dataPath + "./config/" + appname;
+        configPath = Mobile.getPlatform().dataPath + "./config/" + appname.replace(" ", "_");
         configFile = configPath + "/game.conf";
         // Load Config
         try {

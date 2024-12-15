@@ -18,7 +18,7 @@ public class SDLMixerPlayer extends AudioPlayer {
         this.platformPlayer = platformPlayer;
 
         try {
-            String rmsPath = "./rms/" + Mobile.getPlatform().loader.suitename;
+            String rmsPath = "./rms/" + Mobile.getPlatform().loader.suitename.replace(" ", "_");
             try {
                 Files.createDirectories(Paths.get(rmsPath));
             }
@@ -30,7 +30,7 @@ public class SDLMixerPlayer extends AudioPlayer {
             String filename = "";
             if ((len = stream.read(buffer)) != -1) {
                 filename = encodeMD5String(buffer);
-                filename = "./rms/" + Mobile.getPlatform().loader.suitename + "/" + filename;
+                filename = "./rms/" + Mobile.getPlatform().loader.suitename.replace(" ", "_") + "/" + filename;
             }
 
             savedFile = filename + type;

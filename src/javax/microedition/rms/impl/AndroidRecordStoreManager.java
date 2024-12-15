@@ -60,7 +60,7 @@ public class AndroidRecordStoreManager implements RecordStoreManager {
 
 	public static final String ILLEGAL_FILENAME_CHARS = "[/\\\\:*?\"<>|]";
 
-	private static String dataDir="./rms/"+Mobile.getPlatform().loader.suitename;
+	private static String dataDir="./rms/"+Mobile.getPlatform().loader.suitename.replace(" ", "_");
 
 	private Map<String, Object> recordStores = null;
 
